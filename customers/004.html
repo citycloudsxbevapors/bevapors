@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Loyalty Card | Kuromi · City Clouds X Bevapors</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Poppins', 'Quicksand', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+        }
+
+        /* Full background image (your pink Hello Kitty background stays visible) */
+        body {
+            min-height: 100vh;
+            background: url('images/4.jpg') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        /* Dark & moody overlay with violet tint — Kuromi gothic but still transparent enough */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(30, 10, 40, 0.3);   /* deep purple-black veil */
+            backdrop-filter: blur(2px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .card-container {
+            position: relative;
+            z-index: 2;
+            max-width: 620px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* === KUROMI CARD: dark romantic, skulls, gothic ribbons, black & magenta accents === 
+           All text matches original layout: Facebook, delivery, PM, contact, card number,
+           points, effective/expiry, wholesale banner, footer & #VapeLoyalty */
+        .loyalty-card {
+            background: rgba(20, 10, 25, 0.88);   /* dark plum/black base, translucent */
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 28px 28px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(200, 80, 140, 0.5) inset;
+            transition: all 0.25s ease;
+            border: 1px solid rgba(180, 70, 130, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Kuromi tiny skull & crossbones decorative (edgy charm) */
+        .loyalty-card::before {
+            content: "💀🐰";
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            bottom: 16px;
+            right: 20px;
+            pointer-events: none;
+            transform: rotate(-5deg);
+        }
+
+        /* Row top: facebook & delivery — Kuromi gothic punk */
+        .row-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .facebook-badge {
+            background: #3a1b3d;   /* dark violet-black */
+            color: #f5b0d0;
+            padding: 6px 20px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.3px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            border: 1px solid #b34180;
+        }
+
+        .delivery-badge {
+            background: #2e1a2e;
+            color: #e8a0c0;
+            padding: 6px 18px;
+            border-radius: 60px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid #a13e6e;
+        }
+
+        .contact-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            background: rgba(40, 20, 45, 0.7);
+            padding: 8px 20px;
+            border-radius: 80px;
+            margin-bottom: 22px;
+            backdrop-filter: blur(4px);
+            border: 1px solid #8b4b6e;
+        }
+
+        .pm-text {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #ffc0e0;
+            background: #2c172f;
+            padding: 6px 20px;
+            border-radius: 60px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.2px;
+        }
+
+        .contact-number {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #ffc5e5;
+            background: #26182c;
+            padding: 6px 18px;
+            border-radius: 60px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Loyalty title — dark gradient with hot pink / magenta */
+        .loyalty-title {
+            text-align: center;
+            margin: 6px 0 0px;
+        }
+        .loyalty-title h2 {
+            font-size: 2.3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #c1549c, #e67eb0, #ff99cc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px rgba(200, 70, 120, 0.5);
+        }
+
+        .shop-name {
+            text-align: center;
+            font-size: 1.28rem;
+            font-weight: 800;
+            color: #dd88b0;
+            margin-top: -6px;
+            letter-spacing: -0.2px;
+        }
+
+        .game-slogan {
+            text-align: center;
+            margin: 16px 0 6px;
+        }
+        .game-badge {
+            background: #511f44;
+            display: inline-block;
+            padding: 8px 28px;
+            border-radius: 60px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #ffc0e0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid #bf598b;
+        }
+
+        .level-up-text {
+            text-align: center;
+            font-size: 0.73rem;
+            font-weight: 700;
+            color: #f0a0c5;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(45, 25, 50, 0.7);
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 5px 22px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Card fields — frosted dark gothic */
+        .card-fields {
+            background: rgba(30, 15, 35, 0.75);
+            backdrop-filter: blur(8px);
+            border-radius: 36px;
+            padding: 22px 26px;
+            margin: 22px 0;
+            box-shadow: inset 0 1px 2px rgba(180, 70, 120, 0.2), 0 4px 14px rgba(0, 0, 0, 0.3);
+        }
+
+        .field-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #683c58;
+        }
+        .field-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .field-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #f0b0d0;
+            letter-spacing: 1px;
+            min-width: 120px;
+        }
+        .field-value {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ffe0f0;
+            background: #1e1025;
+            padding: 6px 20px;
+            border-radius: 60px;
+            flex: 1;
+            margin-left: 16px;
+            box-shadow: inset 0 0 0 1px #87446b, 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .dates-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .date-item {
+            flex: 1;
+        }
+        .date-item .field-row {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .date-item .field-label {
+            margin-bottom: 4px;
+        }
+        .date-item .field-value {
+            margin-left: 0;
+            width: 100%;
+            text-align: center;
+            background: #24142c;
+        }
+
+        /* Wholesale banner — dark magenta */
+        .wholesale-banner {
+            text-align: center;
+            background: #541f46;
+            color: #ffc0e0;
+            padding: 12px 16px;
+            border-radius: 60px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            margin: 14px 0 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            backdrop-filter: blur(2px);
+            letter-spacing: 0.2px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border: 1px solid #ac3e76;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #6a4260;
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: #e6a0c5;
+        }
+
+        /* icons */
+        .fa, .fab, .fas {
+            opacity: 0.9;
+        }
+
+        .loyalty-card:hover {
+            background: rgba(20, 10, 25, 0.94);
+            transform: scale(1.01);
+            box-shadow: 0 25px 45px rgba(150, 50, 100, 0.4);
+        }
+
+        /* responsive */
+        @media (max-width: 550px) {
+            body { padding: 16px; }
+            .loyalty-card { padding: 20px 16px; }
+            .loyalty-title h2 { font-size: 1.7rem; }
+            .shop-name { font-size: 1rem; }
+            .field-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+            .field-value { margin-left: 0; width: 100%; }
+            .dates-row { flex-direction: column; gap: 12px; }
+            .row-top { flex-direction: column; align-items: stretch; text-align: center; }
+            .contact-row { flex-direction: column; align-items: stretch; text-align: center; }
+            .card-fields { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="card-container">
+    <!-- KUROMI THEMED LOYALTY CARD
+         Full original text structure: Facebook, delivery nationwide, PM on FB page, contact number,
+         LOYALTY CARD title, City Clouds Vape Shop, GAME ON CLOUDSUP, LEVEL UP EVERY PUFF,
+         CARD NUMBER, YOUR POINTS, EFFECTIVE DATE, EXPIRY DATE, wholesale banner, footer with Facebook & #VapeLoyalty.
+         All adapted to Kuromi's dark gothic / black & magenta punk aesthetic. -->
+    <div class="loyalty-card">
+        
+        <!-- Facebook + OPEN FOR DELIVERY NATIONWIDE (exact text) -->
+        <div class="row-top">
+            <div class="facebook-badge">
+                <i class="fab fa-facebook-f"></i> Facebook:City Clouds X Bevapors
+            </div>
+            <div class="delivery-badge">
+                <i class="fas fa-truck-fast"></i> OPEN FOR DELIVERY NATIONWIDE
+            </div>
+        </div>
+
+        <!-- PM ON FACEBOOK PAGE + CONTACT NUMBER (exact) -->
+        <div class="contact-row">
+            <div class="pm-text">
+                <i class="fab fa-facebook-messenger"></i> PM ON FACEBOOK PAGE
+            </div>
+        </div>
+
+        <!-- LOYALTY CARD header & shop name -->
+        <div class="loyalty-title">
+            <h2>LOYALTY CARD</h2>
+        </div>
+        <div class="shop-name">CITY CLOUDS VAPE SHOP</div>
+
+        <!-- GAME ON, CLOUDSUP! + LEVEL UP EVERY PUFF -->
+        <div class="game-slogan">
+            <span class="game-badge"><i class="fas fa-skull"></i> GAME ON, CLOUDS UP!</span>
+        </div>
+        
+        <div class="level-up-text">
+            <i class="fas fa-crown"></i> LEVEL UP EVERY PUFF <i class="fas fa-moon"></i>
+        </div>
+
+        <!-- CARD DETAILS exactly as original layout -->
+        <div class="card-fields">
+            <div class="field-row">
+                <div class="field-label">CARD NUMBER:</div>
+                <div class="field-value">004</div>
+            </div>
+            <div class="field-row">
+                <div class="field-label">YOUR POINTS:</div>
+                <div class="field-value">500 Points</div>
+            </div>
+            <!-- EFFECTIVE DATE & EXPIRY DATE side by side -->
+            <div class="dates-row">
+                <div class="date-item">
+                    <div class="field-row">
+                        <div class="field-label">EFFECTIVE DATE:</div>
+                        <div class="field-value">May 29, 2026</div>
+                    </div>
+                </div>
+                <div class="date-item">
+                    <div class="field-row">
+                        <div class="field-label">EXPIRY DATE:</div>
+                        <div class="field-value">July 29, 2026</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- OPEN FOR WHOLESALE AND BULK ORDERS banner -->
+        <div class="wholesale-banner">
+            <i class="fas fa-boxes"></i> OPEN FOR WHOLESALE AND BULK ORDERS <i class="fas fa-chart-line"></i>
+        </div>
+
+        <!-- Footer: Facebook + hashtag exactly as PNG shows -->
+        <div class="card-footer">
+            <div><i class="fab fa-facebook"></i> Facebook:City Clouds X Bevapors</div>
+            <div><i class="fas fa-hashtag"></i> LoyaltyCard</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
