@@ -56,10 +56,6 @@
                 background-blend-mode: overlay;
             }
         }
-        /* if image fails, beautiful gradient backup */
-        body:after {
-            display: none;
-        }
 
         /* main container that uses flex to fill remaining space without overflow */
         .app-wrapper {
@@ -77,7 +73,7 @@
             -webkit-backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--line);
             width: 100%;
-            flex-shrink: 0;           /* prevents shrinking */
+            flex-shrink: 0;
             transition: background 0.2s ease;
         }
 
@@ -85,19 +81,19 @@
             width: 100%;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 12px 30px;       /* left/right margin (30px) to maximize page but keep breathing room */
+            padding: 12px 30px;
         }
 
         /* responsive: smaller screens get reduced side padding but still balanced */
         @media (max-width: 768px) {
             .header-container {
-                padding: 12px 20px;
+                padding: 10px 20px;
             }
         }
 
         @media (max-width: 480px) {
             .header-container {
-                padding: 10px 16px;
+                padding: 8px 16px;
             }
         }
 
@@ -105,6 +101,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .logo {
@@ -115,6 +113,7 @@
             display: flex;
             align-items: center;
             letter-spacing: 0.3px;
+            flex-shrink: 0;
         }
 
         .logo span {
@@ -130,13 +129,19 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
         }
 
+        /* Navigation - always visible, no burger menu */
+        nav {
+            display: block !important;
+        }
+
         nav ul {
             display: flex;
             list-style: none;
+            gap: 8px;
         }
 
         nav ul li {
-            margin-left: 26px;
+            margin-left: 0;
         }
 
         nav ul li a {
@@ -144,61 +149,45 @@
             text-decoration: none;
             font-weight: 600;
             position: relative;
-            padding-bottom: 4px;
+            padding: 8px 16px;
+            border-radius: 40px;
+            transition: all 0.25s ease;
+            display: inline-block;
         }
 
         nav ul li a:hover {
             color: #f8f6ff;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         nav ul li a::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            height: 2px;
-            width: 0;
-            background: linear-gradient(90deg, var(--primary), #b07cff);
-            transition: width 0.25s ease;
-        }
-
-        nav ul li a:hover::after {
-            width: 100%;
-        }
-
-        .mobile-menu-btn {
             display: none;
-            background: rgba(255,255,255,0.12);
-            border: 1px solid var(--line);
-            color: var(--text-strong);
-            font-size: 24px;
-            cursor: pointer;
-            width: 44px;
-            height: 44px;
-            border-radius: 60px;
-            transition: all 0.2s ease;
-            backdrop-filter: blur(4px);
         }
 
-        .mobile-menu-btn:active {
-            background: rgba(138, 43, 226, 0.4);
-            transform: scale(0.96);
+        /* Active page indicator */
+        nav ul li a.active {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(106, 13, 173, 0.3));
+            border: 1px solid rgba(138, 43, 226, 0.5);
+        }
+
+        /* Hide mobile menu button completely - no burger */
+        .mobile-menu-btn {
+            display: none !important;
         }
 
         /* ----- HERO SECTION: FITS WITHOUT SCROLL ----- */
         .hero {
-            flex: 1;                  /* takes remaining space, no overflow */
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             width: 100%;
-            min-height: 0;            /* avoid flex overflow */
-            overflow-y: auto;         /* smooth scrolling only if truly needed (on rare small heights) */
+            min-height: 0;
+            overflow-y: auto;
             scroll-behavior: smooth;
         }
 
-        /* custom scroll inside hero only if needed — but content visible */
         .hero::-webkit-scrollbar {
             width: 4px;
             background: transparent;
@@ -268,7 +257,7 @@
             box-shadow: 0 14px 34px rgba(138, 43, 226, 0.5);
         }
 
-        /* ----- DECORATIVE CLOUDS (keep visible but less intrusive) ----- */
+        /* ----- DECORATIVE CLOUDS ----- */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-12px); }
@@ -289,7 +278,7 @@
         .cloud:nth-child(3) { bottom: 18%; left: 8%; font-size: 110px; animation-delay: 3s; }
         .cloud:nth-child(4) { bottom: 12%; right: 5%; font-size: 95px; animation-delay: 5s; }
 
-        /* ---------- FOOTER (always visible, no scrolling needed) ---------- */
+        /* ---------- FOOTER ---------- */
         footer {
             background: var(--overlay-75);
             backdrop-filter: blur(5px);
@@ -297,7 +286,6 @@
             border-top: 1px solid var(--line);
             width: 100%;
             flex-shrink: 0;
-            margin-top: 0;
         }
 
         .footer-container {
@@ -357,89 +345,64 @@
             background: linear-gradient(135deg, #d7c0ff, #9b79ff);
         }
 
-        /* ---------- ENHANCED MOBILE CSS (optimized for touch, smaller screens, and no layout shift) ---------- */
+        /* ========== RESPONSIVE DESIGN - NO BURGER MENU ========== */
+        /* Mobile styles: navigation stays visible, just becomes more compact */
         @media (max-width: 768px) {
             .header-content {
+                flex-direction: row;
+                justify-content: space-between;
                 flex-wrap: wrap;
-                position: relative;
             }
             
+            .logo {
+                font-size: 20px;
+            }
+            
+            /* Navigation always visible, wraps on small screens */
             nav {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: var(--overlay-90);
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
-                padding: 20px 0;
-                border-bottom: 1px solid var(--line);
-                border-radius: 0 0 24px 24px;
-                z-index: 1001;
-                box-shadow: 0 20px 30px -12px rgba(0,0,0,0.4);
-                animation: fadeSlideDown 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            }
-            
-            @keyframes fadeSlideDown {
-                0% {
-                    opacity: 0;
-                    transform: translateY(-12px);
-                }
-                100% {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            
-            nav.active {
-                display: block;
+                width: auto;
+                position: static;
+                background: transparent;
+                backdrop-filter: none;
+                padding: 0;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                animation: none;
             }
             
             nav ul {
-                flex-direction: column;
-                align-items: center;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: flex-end;
                 gap: 6px;
             }
             
             nav ul li {
                 margin: 0;
-                width: 100%;
-                text-align: center;
+                width: auto;
             }
             
             nav ul li a {
-                display: inline-block;
-                padding: 12px 20px;
-                font-size: 1.2rem;
-                width: 80%;
-                border-radius: 50px;
-                background: rgba(255,255,255,0.03);
-                transition: background 0.2s;
+                padding: 6px 14px;
+                font-size: 0.95rem;
+                background: rgba(255, 255, 255, 0.06);
+                border-radius: 40px;
+                white-space: nowrap;
             }
             
             nav ul li a:active {
-                background: rgba(138, 43, 226, 0.3);
-                transform: scale(0.97);
+                background: rgba(138, 43, 226, 0.4);
+                transform: scale(0.96);
             }
             
             nav ul li a::after {
                 display: none;
             }
             
-            .mobile-menu-btn {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            
             .logo-icon {
-                width: 46px;
-                height: 46px;
-            }
-            
-            .logo {
-                font-size: 22px;
+                width: 42px;
+                height: 42px;
             }
             
             .hero-content {
@@ -447,7 +410,7 @@
             }
             
             .hero h1 {
-                font-size: 1.9rem;
+                font-size: 1.8rem;
                 margin-bottom: 14px;
                 letter-spacing: -0.2px;
             }
@@ -468,15 +431,47 @@
             }
             
             /* smoother tap highlights */
-            .order-btn, .social-links a, .mobile-menu-btn {
+            .order-btn, .social-links a, nav ul li a {
                 -webkit-tap-highlight-color: rgba(138, 43, 226, 0.4);
             }
         }
         
-        /* Extra small devices (phones, <480px) — MOBILE PRIORITY fine-tuning */
+        /* Extra small devices (phones, <480px) */
         @media (max-width: 480px) {
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            
+            .logo {
+                justify-content: center;
+                font-size: 18px;
+            }
+            
+            .logo-icon {
+                width: 36px;
+                height: 36px;
+            }
+            
+            /* Navigation becomes centered with smaller touch targets */
+            nav {
+                width: 100%;
+            }
+            
+            nav ul {
+                justify-content: center;
+                gap: 8px;
+            }
+            
+            nav ul li a {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
+            
             .hero h1 {
-                font-size: 1.65rem;
+                font-size: 1.6rem;
                 margin-bottom: 12px;
                 line-height: 1.3;
             }
@@ -487,28 +482,18 @@
             
             .hero p {
                 font-size: 0.9rem;
-                margin-bottom: 24px;
+                margin-bottom: 22px;
                 line-height: 1.5;
             }
             
             .order-btn {
                 padding: 12px 28px;
                 font-size: 0.95rem;
-                width: 85%;
-                max-width: 260px;
-                letter-spacing: 0.5px;
+                width: auto;
+                min-width: 200px;
             }
             
-            .logo {
-                font-size: 18px;
-            }
-            
-            .logo-icon {
-                width: 38px;
-                height: 38px;
-            }
-            
-            /* hide all clouds on very small to keep performance & clarity */
+            /* hide all clouds on very small screens */
             .cloud {
                 display: none;
             }
@@ -520,7 +505,7 @@
             }
             
             .copyright {
-                font-size: 0.75rem;
+                font-size: 0.7rem;
             }
             
             .social-links a {
@@ -528,13 +513,20 @@
                 height: 36px;
             }
             
-            /* more compact header */
-            header .header-container {
-                padding: 8px 14px;
-            }
-            
             .hero-content {
                 padding: 6px 16px 24px;
+            }
+        }
+        
+        /* Medium screens where nav might need adjustment */
+        @media (min-width: 481px) and (max-width: 600px) {
+            nav ul li a {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+            
+            .logo {
+                font-size: 18px;
             }
         }
         
@@ -562,8 +554,8 @@
         /* extremely small heights (landscape phones) */
         @media (max-height: 550px) {
             .logo-icon {
-                width: 40px;
-                height: 40px;
+                width: 36px;
+                height: 36px;
             }
             header .header-container {
                 padding: 6px 20px;
@@ -573,20 +565,26 @@
             }
             .hero h1 {
                 margin-bottom: 6px;
+                font-size: 1.4rem;
             }
             .hero p {
                 margin-bottom: 12px;
+                font-size: 0.8rem;
             }
             .order-btn {
-                padding: 8px 20px;
-                font-size: 0.9rem;
+                padding: 6px 18px;
+                font-size: 0.85rem;
             }
             .footer-container {
-                padding: 8px 20px;
+                padding: 6px 20px;
+            }
+            nav ul li a {
+                padding: 4px 10px;
+                font-size: 0.8rem;
             }
         }
         
-        /* Additional mobile refinements: smooth scrolling & better touch feedback for buttons */
+        /* Additional mobile refinements: smooth scrolling & better touch feedback */
         @media (pointer: coarse) {
             .order-btn:active {
                 transform: scale(0.97);
@@ -597,9 +595,13 @@
                 transform: scale(0.92);
                 background: var(--primary);
             }
+            
+            nav ul li a:active {
+                transform: scale(0.96);
+            }
         }
         
-        /* subtle loading & safe area for modern notches */
+        /* Safe area support for modern notches */
         @supports (padding: max(0px)) {
             .header-container {
                 padding-left: max(30px, env(safe-area-inset-left));
@@ -618,8 +620,8 @@
             }
             @media (max-width: 480px) {
                 .header-container {
-                    padding-left: max(14px, env(safe-area-inset-left));
-                    padding-right: max(14px, env(safe-area-inset-right));
+                    padding-left: max(16px, env(safe-area-inset-left));
+                    padding-right: max(16px, env(safe-area-inset-right));
                 }
             }
         }
@@ -627,29 +629,20 @@
         /* Prevent overscroll effects on mobile */
         body {
             overscroll-behavior: none;
-            touch-action: pan-y pinch-zoom; /* allow vertical within hero only but body locked */
         }
         
         .hero {
             overscroll-behavior: contain;
         }
         
-        /* ensure no layout shifting from scrollbar presence */
-        .hero {
-            scrollbar-gutter: stable;
-        }
-        
-        /* custom hover & active transitions for better mobile feel */
         .order-btn {
             transition: transform 0.2s ease, background 0.2s, box-shadow 0.2s;
         }
         
-        /* final polish: button ripple effect on mobile via pseudo but lightweight */
         .order-btn:active {
             background: linear-gradient(135deg, #9b4dff, #5c0e9e);
         }
         
-        /* optional small glow enhancement for cta on mobile screens */
         @media (max-width: 768px) {
             .order-btn {
                 box-shadow: 0 8px 22px rgba(138, 43, 226, 0.5);
@@ -659,19 +652,16 @@
 </head>
 <body>
 <div class="app-wrapper">
-    <!-- Header with left/right margins (30px on desktop) to maximize page but keep elegance -->
+    <!-- Header with inline navigation (no burger menu) -->
     <header>
         <div class="header-container">
             <div class="header-content">
                 <a href="#" class="logo">
                     CityClouds <span>X</span> Bevapors
                 </a>
-                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <nav id="mainNav">
-                    <ul style="justify-content: center;">
-                        <li><a href="index.html">Home</a></li>
+                <nav>
+                    <ul>
+                        <li><a href="index.html" class="active">Home</a></li>
                         <li><a href="mechanics.html">Mechanics</a></li>
                         <li><a href="#">Contact</a></li>
                     </ul>
@@ -680,9 +670,9 @@
         </div>
     </header>
 
-    <!-- Hero section - fits entirely without scrolling -->
+    <!-- Hero section -->
     <section class="hero">
-        <!-- decorative cloud icons (soft) -->
+        <!-- decorative cloud icons -->
         <div class="cloud"><i class="fas fa-cloud"></i></div>
         <div class="cloud"><i class="fas fa-cloud"></i></div>
         <div class="cloud"><i class="fas fa-cloud"></i></div>
@@ -695,7 +685,7 @@
         </div>
     </section>
 
-    <!-- Footer always visible, no scroll required -->
+    <!-- Footer -->
     <footer>
         <div class="footer-container">
             <div class="footer-content">
@@ -712,67 +702,16 @@
 
 <script>
     (function() {
-        // Mobile menu toggle with enhanced UX: icon swap & close on link click + outside tap
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mainNav = document.getElementById('mainNav');
-
-        if (mobileMenuBtn && mainNav) {
-            const updateIcon = (isActive) => {
-                const icon = mobileMenuBtn.querySelector('i');
-                if (icon) {
-                    icon.className = isActive ? 'fas fa-times' : 'fas fa-bars';
-                }
-            };
-            
-            const closeMenu = () => {
-                if (mainNav.classList.contains('active')) {
-                    mainNav.classList.remove('active');
-                    updateIcon(false);
-                }
-            };
-            
-            const toggleMenu = (e) => {
-                e.stopPropagation();
-                const willBeActive = !mainNav.classList.contains('active');
-                if (willBeActive) {
-                    mainNav.classList.add('active');
-                    updateIcon(true);
-                } else {
-                    closeMenu();
-                }
-            };
-            
-            mobileMenuBtn.addEventListener('click', toggleMenu);
-            
-            // Close navigation when any nav link is clicked (smooth mobile behavior)
-            const navLinks = document.querySelectorAll('#mainNav a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    closeMenu();
-                    // optional: tiny delay for smooth close before navigation (prevents flicker)
-                });
-            });
-            
-            // click outside closes menu (touch-friendly)
-            document.addEventListener('click', function(event) {
-                if (mainNav.classList.contains('active') && 
-                    !mainNav.contains(event.target) && 
-                    !mobileMenuBtn.contains(event.target)) {
-                    closeMenu();
-                }
-            });
-            
-            // prevent menu from closing when clicking inside nav but not on links (fine)
-            mainNav.addEventListener('click', (e) => e.stopPropagation());
-        }
-        
-        // enhanced button micro-interactions for both mouse & touch
+        // Simple button micro-interactions for both mouse & touch
         const orderBtn = document.querySelector('.order-btn');
         if (orderBtn) {
-            const resetTransform = (el) => { el.style.transform = ''; };
-            orderBtn.addEventListener('mouseenter', function() { this.style.transform = 'translateY(-3px)'; });
-            orderBtn.addEventListener('mouseleave', function() { this.style.transform = ''; });
-            // mobile touch feedback with better precision
+            orderBtn.addEventListener('mouseenter', function() { 
+                this.style.transform = 'translateY(-3px)'; 
+            });
+            orderBtn.addEventListener('mouseleave', function() { 
+                this.style.transform = ''; 
+            });
+            // mobile touch feedback
             orderBtn.addEventListener('touchstart', function(e) {
                 this.style.transform = 'translateY(-2px)';
                 this.style.transition = 'transform 0.08s ease';
@@ -781,36 +720,36 @@
                 this.style.transform = '';
                 setTimeout(() => { this.style.transition = ''; }, 100);
             });
-            orderBtn.addEventListener('touchcancel', function() { this.style.transform = ''; });
+            orderBtn.addEventListener('touchcancel', function() { 
+                this.style.transform = ''; 
+            });
         }
         
-        // prevent body scroll on touchmove when unnecessary (but keep hero micro-scroll if needed)
+        // Prevent body scroll overscroll on hero
         const heroSection = document.querySelector('.hero');
         if (heroSection) {
-            // this just ensures no overscroll effect leaks to body background
             heroSection.addEventListener('touchmove', (e) => {
-                // allow natural scroll inside hero only, prevent when at boundaries if needed but fine
                 const { scrollTop, scrollHeight, clientHeight } = heroSection;
                 const isAtTop = scrollTop <= 0;
                 const isAtBottom = scrollTop + clientHeight >= scrollHeight - 2;
                 if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
-                    // slight resistance but not blocking completely - improves usability
                     if (Math.abs(e.deltaY) > 2) e.preventDefault();
                 }
             }, { passive: false });
         }
         
-        // small extra: close mobile menu on window resize (if switching to desktop)
-        let resizeTimer;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                if (window.innerWidth > 768 && mainNav && mainNav.classList.contains('active')) {
-                    mainNav.classList.remove('active');
-                    const icon = mobileMenuBtn?.querySelector('i');
-                    if (icon) icon.className = 'fas fa-bars';
-                }
-            }, 100);
+        // Add active state styling for current page based on URL (simple)
+        const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPath || (currentPath === '' && href === 'index.html')) {
+                link.classList.add('active');
+            } else if (currentPath === 'index.html' && href === 'index.html') {
+                link.classList.add('active');
+            } else if (currentPath === 'mechanics.html' && href === 'mechanics.html') {
+                link.classList.add('active');
+            }
         });
     })();
 </script>
