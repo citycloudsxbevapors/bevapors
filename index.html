@@ -32,7 +32,7 @@
         html, body {
             height: 100%;
             width: 100%;
-            overflow: hidden;
+            overflow: hidden;        /* no global scrolling — everything fits inside */
         }
 
         body {
@@ -50,6 +50,7 @@
             overflow: hidden;
         }
 
+        /* fallback solid gradient if bg image missing */
         @supports (background-image: url("images/bg.jpg")) {
             body {
                 background-blend-mode: overlay;
@@ -83,6 +84,7 @@
             padding: 12px 30px;
         }
 
+        /* responsive: smaller screens get reduced side padding but still balanced */
         @media (max-width: 768px) {
             .header-container {
                 padding: 10px 20px;
@@ -118,6 +120,16 @@
             color: var(--primary);
         }
 
+        .logo-icon {
+            margin-right: 12px;
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Navigation - always visible, no burger menu */
         nav {
             display: block !important;
         }
@@ -152,18 +164,20 @@
             display: none;
         }
 
+        /* Active page indicator */
         nav ul li a.active {
             background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(106, 13, 173, 0.3));
             border: 1px solid rgba(138, 43, 226, 0.5);
         }
 
+        /* Hide mobile menu button completely - no burger */
         .mobile-menu-btn {
             display: none !important;
         }
 
-        /* ----- HERO SECTION - LIMITED HEIGHT TO SHOW FOOTER ----- */
+        /* ----- HERO SECTION: FITS WITHOUT SCROLL ----- */
         .hero {
-            flex: 1 1 auto;
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -184,6 +198,7 @@
             border-radius: 20px;
         }
 
+        /* Soft vignette for readability */
         .hero::before {
             content: '';
             position: absolute;
@@ -203,7 +218,7 @@
         }
 
         .hero h1 {
-            font-size: clamp(1.8rem, 4vw, 3.6rem);
+            font-size: clamp(2rem, 4vw, 3.6rem);
             margin-bottom: 16px;
             font-weight: 800;
             letter-spacing: 1px;
@@ -216,7 +231,7 @@
         }
 
         .hero p {
-            font-size: clamp(0.95rem, 1.8vw, 1.2rem);
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
             max-width: 680px;
             margin: 0 auto 28px;
             line-height: 1.65;
@@ -263,7 +278,7 @@
         .cloud:nth-child(3) { bottom: 18%; left: 8%; font-size: 110px; animation-delay: 3s; }
         .cloud:nth-child(4) { bottom: 12%; right: 5%; font-size: 95px; animation-delay: 5s; }
 
-        /* ---------- FOOTER - ALWAYS VISIBLE (FIXED MOBILE ISSUE) ---------- */
+        /* ---------- FOOTER ---------- */
         footer {
             background: var(--overlay-75);
             backdrop-filter: blur(5px);
@@ -271,9 +286,6 @@
             border-top: 1px solid var(--line);
             width: 100%;
             flex-shrink: 0;
-            margin-top: 0;
-            position: relative;
-            z-index: 10;
         }
 
         .footer-container {
@@ -284,13 +296,13 @@
 
         @media (max-width: 768px) {
             .footer-container {
-                padding: 10px 20px;
+                padding: 12px 20px;
             }
         }
 
         @media (max-width: 480px) {
             .footer-container {
-                padding: 8px 16px;
+                padding: 10px 16px;
             }
         }
 
@@ -333,7 +345,8 @@
             background: linear-gradient(135deg, #d7c0ff, #9b79ff);
         }
 
-        /* ========== RESPONSIVE DESIGN - FOOTER ALWAYS VISIBLE ========== */
+        /* ========== RESPONSIVE DESIGN - NO BURGER MENU ========== */
+        /* Mobile styles: navigation stays visible, just becomes more compact */
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: row;
@@ -345,6 +358,7 @@
                 font-size: 20px;
             }
             
+            /* Navigation always visible, wraps on small screens */
             nav {
                 width: auto;
                 position: static;
@@ -382,47 +396,52 @@
                 transform: scale(0.96);
             }
             
+            nav ul li a::after {
+                display: none;
+            }
+            
+            .logo-icon {
+                width: 42px;
+                height: 42px;
+            }
+            
             .hero-content {
-                padding: 12px 16px 16px;
+                padding: 10px 16px 20px;
             }
             
             .hero h1 {
-                font-size: 1.7rem;
-                margin-bottom: 12px;
+                font-size: 1.8rem;
+                margin-bottom: 14px;
+                letter-spacing: -0.2px;
             }
             
             .hero p {
-                font-size: 0.95rem;
-                margin-bottom: 20px;
+                font-size: 1rem;
                 padding: 0 8px;
             }
             
             .order-btn {
-                padding: 10px 28px;
-                font-size: 0.95rem;
+                padding: 12px 30px;
+                font-size: 1rem;
+                box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);
             }
             
             .cloud {
-                opacity: 0.18;
+                opacity: 0.2;
             }
             
+            /* smoother tap highlights */
             .order-btn, .social-links a, nav ul li a {
                 -webkit-tap-highlight-color: rgba(138, 43, 226, 0.4);
             }
-            
-            /* Ensure footer stays visible and hero doesn't push it away */
-            .hero {
-                flex: 1 1 auto;
-                max-height: calc(100vh - 130px);
-            }
         }
         
-        /* Extra small devices - FIXED FOOTER VISIBILITY */
+        /* Extra small devices (phones, <480px) */
         @media (max-width: 480px) {
             .header-content {
                 flex-direction: column;
                 align-items: stretch;
-                gap: 8px;
+                gap: 10px;
             }
             
             .logo {
@@ -430,6 +449,12 @@
                 font-size: 18px;
             }
             
+            .logo-icon {
+                width: 36px;
+                height: 36px;
+            }
+            
+            /* Navigation becomes centered with smaller touch targets */
             nav {
                 width: 100%;
             }
@@ -440,33 +465,35 @@
             }
             
             nav ul li a {
-                padding: 5px 12px;
+                padding: 6px 12px;
                 font-size: 0.85rem;
                 white-space: nowrap;
             }
             
-            .hero-content {
-                padding: 8px 16px 12px;
-            }
-            
             .hero h1 {
-                font-size: 1.45rem;
-                margin-bottom: 10px;
+                font-size: 1.6rem;
+                margin-bottom: 12px;
                 line-height: 1.3;
             }
             
+            .hero h1 span {
+                display: inline-block;
+            }
+            
             .hero p {
-                font-size: 0.85rem;
-                margin-bottom: 18px;
+                font-size: 0.9rem;
+                margin-bottom: 22px;
                 line-height: 1.5;
             }
             
             .order-btn {
-                padding: 10px 24px;
-                font-size: 0.9rem;
-                min-width: 180px;
+                padding: 12px 28px;
+                font-size: 0.95rem;
+                width: auto;
+                min-width: 200px;
             }
             
+            /* hide all clouds on very small screens */
             .cloud {
                 display: none;
             }
@@ -474,7 +501,7 @@
             .footer-content {
                 flex-direction: column;
                 text-align: center;
-                gap: 8px;
+                gap: 10px;
             }
             
             .copyright {
@@ -482,90 +509,82 @@
             }
             
             .social-links a {
-                width: 34px;
-                height: 34px;
+                width: 36px;
+                height: 36px;
             }
             
-            /* Critical fix: ensure hero doesn't overflow and hides footer */
-            .hero {
-                flex: 0 1 auto;
-                max-height: calc(100vh - 115px);
-            }
-            
-            footer {
-                flex-shrink: 0;
+            .hero-content {
+                padding: 6px 16px 24px;
             }
         }
         
-        /* Small height devices (landscape) - ensure footer visible */
-        @media (max-height: 650px) {
-            .hero-content {
-                padding: 6px 20px 10px;
+        /* Medium screens where nav might need adjustment */
+        @media (min-width: 481px) and (max-width: 600px) {
+            nav ul li a {
+                padding: 6px 10px;
+                font-size: 0.85rem;
             }
             
+            .logo {
+                font-size: 18px;
+            }
+        }
+        
+        /* Make sure hero inner doesn't cause scroll on moderate heights */
+        @media (max-height: 620px) {
+            .hero h1 {
+                margin-bottom: 8px;
+                font-size: clamp(1.5rem, 3.5vh, 2rem);
+            }
+            .hero p {
+                margin-bottom: 16px;
+                font-size: 0.85rem;
+            }
+            .order-btn {
+                padding: 10px 28px;
+            }
+            .hero-content {
+                padding: 12px 20px 18px;
+            }
+            .cloud {
+                opacity: 0.15;
+            }
+        }
+        
+        /* extremely small heights (landscape phones) */
+        @media (max-height: 550px) {
+            .logo-icon {
+                width: 36px;
+                height: 36px;
+            }
+            header .header-container {
+                padding: 6px 20px;
+            }
+            .hero {
+                align-items: center;
+            }
             .hero h1 {
                 margin-bottom: 6px;
                 font-size: 1.4rem;
             }
-            
             .hero p {
                 margin-bottom: 12px;
                 font-size: 0.8rem;
             }
-            
             .order-btn {
-                padding: 8px 22px;
+                padding: 6px 18px;
                 font-size: 0.85rem;
             }
-            
-            .cloud {
-                opacity: 0.1;
-            }
-            
-            .hero {
-                max-height: calc(100vh - 110px);
-            }
-        }
-        
-        @media (max-height: 550px) {
-            .logo {
-                font-size: 16px;
-            }
-            
-            header .header-container {
-                padding: 5px 16px;
-            }
-            
-            .hero h1 {
-                font-size: 1.2rem;
-                margin-bottom: 4px;
-            }
-            
-            .hero p {
-                margin-bottom: 8px;
-                font-size: 0.75rem;
-            }
-            
-            .order-btn {
-                padding: 6px 16px;
-                font-size: 0.8rem;
-            }
-            
             .footer-container {
-                padding: 5px 16px;
+                padding: 6px 20px;
             }
-            
             nav ul li a {
                 padding: 4px 10px;
-                font-size: 0.75rem;
-            }
-            
-            .hero {
-                max-height: calc(100vh - 95px);
+                font-size: 0.8rem;
             }
         }
         
-        /* Touch feedback */
+        /* Additional mobile refinements: smooth scrolling & better touch feedback */
         @media (pointer: coarse) {
             .order-btn:active {
                 transform: scale(0.97);
@@ -591,7 +610,7 @@
             .footer-container {
                 padding-left: max(30px, env(safe-area-inset-left));
                 padding-right: max(30px, env(safe-area-inset-right));
-                padding-bottom: max(10px, env(safe-area-inset-bottom));
+                padding-bottom: max(12px, env(safe-area-inset-bottom));
             }
             @media (max-width: 768px) {
                 .header-container {
@@ -607,7 +626,7 @@
             }
         }
         
-        /* Prevent overscroll effects */
+        /* Prevent overscroll effects on mobile */
         body {
             overscroll-behavior: none;
         }
@@ -626,22 +645,14 @@
         
         @media (max-width: 768px) {
             .order-btn {
-                box-shadow: 0 8px 22px rgba(138, 43, 226, 0.4);
+                box-shadow: 0 8px 22px rgba(138, 43, 226, 0.5);
             }
-        }
-        
-        /* Ensure footer is always at bottom */
-        .app-wrapper {
-            justify-content: space-between;
-        }
-        
-        footer {
-            margin-top: auto;
         }
     </style>
 </head>
 <body>
 <div class="app-wrapper">
+    <!-- Header with inline navigation (no burger menu) -->
     <header>
         <div class="header-container">
             <div class="header-content">
@@ -659,7 +670,9 @@
         </div>
     </header>
 
+    <!-- Hero section -->
     <section class="hero">
+        <!-- decorative cloud icons -->
         <div class="cloud"><i class="fas fa-cloud"></i></div>
         <div class="cloud"><i class="fas fa-cloud"></i></div>
         <div class="cloud"><i class="fas fa-cloud"></i></div>
@@ -672,6 +685,7 @@
         </div>
     </section>
 
+    <!-- Footer -->
     <footer>
         <div class="footer-container">
             <div class="footer-content">
@@ -688,7 +702,7 @@
 
 <script>
     (function() {
-        // Button micro-interactions
+        // Simple button micro-interactions for both mouse & touch
         const orderBtn = document.querySelector('.order-btn');
         if (orderBtn) {
             orderBtn.addEventListener('mouseenter', function() { 
@@ -697,7 +711,8 @@
             orderBtn.addEventListener('mouseleave', function() { 
                 this.style.transform = ''; 
             });
-            orderBtn.addEventListener('touchstart', function() {
+            // mobile touch feedback
+            orderBtn.addEventListener('touchstart', function(e) {
                 this.style.transform = 'translateY(-2px)';
                 this.style.transition = 'transform 0.08s ease';
             });
@@ -723,7 +738,7 @@
             }, { passive: false });
         }
         
-        // Active page highlighting
+        // Add active state styling for current page based on URL (simple)
         const currentPath = window.location.pathname.split('/').pop() || 'index.html';
         const navLinks = document.querySelectorAll('nav ul li a');
         navLinks.forEach(link => {
@@ -736,28 +751,6 @@
                 link.classList.add('active');
             }
         });
-        
-        // Force footer visibility on mobile by recalculating on orientation change
-        window.addEventListener('resize', function() {
-            if (heroSection) {
-                const viewportHeight = window.innerHeight;
-                const headerHeight = document.querySelector('header')?.offsetHeight || 0;
-                const footerHeight = document.querySelector('footer')?.offsetHeight || 0;
-                const availableHeight = viewportHeight - headerHeight - footerHeight;
-                heroSection.style.maxHeight = availableHeight + 'px';
-            }
-        });
-        
-        // Initial call to set proper max-height
-        setTimeout(() => {
-            if (heroSection) {
-                const viewportHeight = window.innerHeight;
-                const headerHeight = document.querySelector('header')?.offsetHeight || 0;
-                const footerHeight = document.querySelector('footer')?.offsetHeight || 0;
-                const availableHeight = viewportHeight - headerHeight - footerHeight - 5;
-                heroSection.style.maxHeight = Math.max(availableHeight, 150) + 'px';
-            }
-        }, 10);
     })();
 </script>
 </body>
