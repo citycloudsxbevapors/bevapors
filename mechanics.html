@@ -60,11 +60,12 @@
         /* ----- HEADER (same margins as index) ----- */
         header {
             background: var(--overlay-90);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--line);
             width: 100%;
             flex-shrink: 0;
+            transition: background 0.2s ease;
         }
 
         .header-container {
@@ -147,16 +148,29 @@
             width: 100%;
         }
 
+        /* ----- ENHANCED MOBILE MENU (styling & touch friendly) ----- */
         .mobile-menu-btn {
             display: none;
-            background: none;
-            border: none;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid var(--line);
             color: var(--text-strong);
             font-size: 24px;
             cursor: pointer;
+            width: 44px;
+            height: 44px;
+            border-radius: 60px;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
         }
 
-        /* ----- HERO (with scrollable content only if needed - mechanics fits) ----- */
+        .mobile-menu-btn:active {
+            background: rgba(138, 43, 226, 0.4);
+            transform: scale(0.96);
+        }
+
+        /* ----- HERO (with scrollable content, mobile optimized) ----- */
         .hero {
             flex: 1;
             display: flex;
@@ -166,6 +180,7 @@
             width: 100%;
             overflow-y: auto;
             scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
 
         .hero::-webkit-scrollbar {
@@ -248,11 +263,17 @@
             background: var(--card-strong);
             backdrop-filter: blur(5px);
             border-radius: 28px;
-            overflow: hidden;
+            overflow-x: auto;
+            display: block;
             margin: 20px 0 20px;
             border-collapse: separate;
             border-spacing: 0;
             box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+        }
+
+        .tier-table table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
         .tier-table th, .tier-table td {
@@ -313,6 +334,13 @@
             padding: 22px 24px;
             border: 1px solid rgba(255,215,140,0.25);
             transition: all 0.2s ease;
+            cursor: pointer;
+            -webkit-tap-highlight-color: rgba(138, 43, 226, 0.3);
+        }
+
+        .choice-card:active {
+            transform: scale(0.98);
+            background: rgba(30, 20, 55, 0.7);
         }
 
         .choice-card:hover {
@@ -342,18 +370,42 @@
             font-style: italic;
         }
 
-        .footer-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 14px 30px;
+        .order-btn {
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            text-decoration: none;
+            font-weight: 800;
+            border-radius: 40px;
+            box-shadow: 0 10px 28px rgba(138, 43, 226, 0.35);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 12px 34px;
+            color: white;
         }
 
+        .order-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 34px rgba(138, 43, 226, 0.55);
+            background: linear-gradient(135deg, #9f44ff, #7b28c7);
+        }
+
+        .order-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* footer styles */
         footer {
             background: var(--overlay-75);
             backdrop-filter: blur(5px);
             border-top: 1px solid var(--line);
             width: 100%;
             flex-shrink: 0;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 14px 30px;
         }
 
         .footer-content {
@@ -389,11 +441,17 @@
             transition: 0.2s;
         }
 
+        .social-links a:active {
+            transform: scale(0.92);
+            background: var(--primary);
+        }
+
         .social-links a:hover {
             transform: translateY(-2px);
             background: linear-gradient(135deg, #d7c0ff, #9b79ff);
         }
 
+        /* animated clouds */
         @keyframes float {
             0%,100%{ transform: translateY(0); }
             50%{ transform: translateY(-10px); }
@@ -412,13 +470,31 @@
         .cloud:nth-child(3) { bottom: 15%; left: 7%; font-size: 85px; animation-delay: 4s;}
         .cloud:nth-child(4) { bottom: 22%; right: 8%; font-size: 100px; animation-delay: 1s;}
 
+        /* ========== ENHANCED MOBILE CSS ========== */
         @media (max-width: 768px) {
-            .hero-content { padding: 20px 20px 40px; }
-            .section-title { font-size: 1.8rem; }
-            .choice-container { flex-direction: column; }
-            .tier-table th, .tier-table td { padding: 12px 8px; font-size: 0.85rem; }
-            .subheading { font-size: 1.2rem; }
-            .cloud { opacity: 0.12; }
+            .hero-content { 
+                padding: 20px 20px 40px; 
+            }
+            .section-title { 
+                font-size: 1.8rem; 
+                display: block;
+                text-align: center;
+            }
+            .choice-container { 
+                flex-direction: column; 
+            }
+            .tier-table th, .tier-table td { 
+                padding: 12px 8px; 
+                font-size: 0.85rem; 
+            }
+            .subheading { 
+                font-size: 1.2rem; 
+            }
+            .cloud { 
+                opacity: 0.12; 
+            }
+            
+            /* mobile navigation dropdown */
             nav {
                 display: none;
                 position: absolute;
@@ -426,38 +502,249 @@
                 left: 0;
                 width: 100%;
                 background: var(--overlay-90);
-                padding: 18px 0;
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                padding: 20px 0;
                 border-bottom: 1px solid var(--line);
+                border-radius: 0 0 24px 24px;
                 z-index: 1001;
+                box-shadow: 0 20px 30px -12px rgba(0,0,0,0.4);
+                animation: fadeSlideDown 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             }
-            nav.active { display: block; }
-            nav ul { flex-direction: column; align-items: center; }
-            nav ul li { margin: 10px 0; }
-            .mobile-menu-btn { display: block; }
+            
+            @keyframes fadeSlideDown {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-12px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            nav.active { 
+                display: block; 
+            }
+            
+            nav ul { 
+                flex-direction: column; 
+                align-items: center; 
+                gap: 6px;
+            }
+            
+            nav ul li { 
+                margin: 0;
+                width: 100%;
+                text-align: center;
+            }
+            
+            nav ul li a {
+                display: inline-block;
+                padding: 12px 20px;
+                font-size: 1.15rem;
+                width: 80%;
+                border-radius: 50px;
+                background: rgba(255,255,255,0.03);
+                transition: background 0.2s;
+            }
+            
+            nav ul li a:active {
+                background: rgba(138, 43, 226, 0.3);
+                transform: scale(0.97);
+            }
+            
+            nav ul li a::after {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            /* table horizontal scroll for small screens */
+            .tier-table {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .tier-table table {
+                min-width: 500px;
+            }
+            
+            /* better touch targets */
+            .info-grid p {
+                font-size: 0.95rem;
+            }
+            
+            .order-btn {
+                padding: 12px 28px;
+                font-size: 0.95rem;
+                width: auto;
+                min-width: 200px;
+            }
         }
 
+        /* Extra small devices (phones, <480px) — fine-tuned */
         @media (max-width: 480px) {
-            .hero-content { padding: 16px 16px 32px; }
-            .section-title { font-size: 1.6rem; }
-            .info-grid { padding: 16px 18px; }
-            .tier-table th, .tier-table td { font-size: 0.75rem; padding: 10px 5px; }
-            .choice-card { padding: 16px; }
-            .cloud { display: none; }
-            .footer-content { flex-direction: column; text-align: center; }
+            .hero-content { 
+                padding: 16px 16px 32px; 
+            }
+            .section-title { 
+                font-size: 1.5rem; 
+                text-align: center;
+                margin-bottom: 18px;
+            }
+            .info-grid { 
+                padding: 18px 16px; 
+                border-radius: 24px;
+            }
+            .info-grid p {
+                font-size: 0.88rem;
+                gap: 8px;
+            }
+            .info-grid i {
+                width: 28px;
+                font-size: 1.1rem;
+            }
+            .subheading {
+                font-size: 1.1rem;
+                margin: 20px 0 12px 0;
+                padding-left: 14px;
+            }
+            .tier-table th, .tier-table td { 
+                font-size: 0.7rem; 
+                padding: 10px 6px; 
+            }
+            .tier-name {
+                font-size: 0.75rem;
+            }
+            .reward-badge {
+                font-size: 0.7rem;
+                padding: 4px 8px;
+            }
+            .choice-card { 
+                padding: 16px; 
+                border-radius: 22px;
+            }
+            .choice-title {
+                font-size: 1.3rem;
+            }
+            .choice-desc {
+                font-size: 0.85rem;
+            }
+            .cloud { 
+                display: none; 
+            }
+            .footer-content { 
+                flex-direction: column; 
+                text-align: center; 
+                gap: 10px;
+            }
+            .copyright {
+                font-size: 0.7rem;
+            }
+            .social-links a {
+                width: 36px;
+                height: 36px;
+            }
+            .note-text {
+                padding: 14px 16px;
+                font-size: 0.8rem;
+                margin-top: 20px;
+            }
+            .order-btn {
+                padding: 10px 24px;
+                font-size: 0.9rem;
+                min-width: 180px;
+            }
         }
 
+        /* height adjustments for small screens */
         @media (max-height: 700px) {
-            .hero-content { padding-top: 18px; padding-bottom: 28px; }
-            .subheading { margin: 16px 0 8px; }
-            .info-grid { margin-bottom: 20px; }
+            .hero-content { 
+                padding-top: 12px; 
+                padding-bottom: 24px; 
+            }
+            .subheading { 
+                margin: 16px 0 10px; 
+            }
+            .info-grid { 
+                margin-bottom: 20px;
+                padding: 16px 20px;
+            }
+            .section-title {
+                margin-bottom: 16px;
+            }
         }
 
-        /* custom micro-interactions */
-        .cta-micro {
-            transition: all 0.2s;
+        /* landscape mode on phones */
+        @media (max-width: 850px) and (orientation: landscape) {
+            .hero-content {
+                padding: 12px 20px 20px;
+            }
+            .info-grid {
+                padding: 12px 18px;
+                margin-bottom: 16px;
+            }
+            .subheading {
+                margin: 12px 0 8px;
+            }
+            .tier-table th, .tier-table td {
+                padding: 8px 6px;
+            }
         }
-        .cta-micro:hover {
-            background: rgba(138, 43, 226, 0.6);
+
+        /* safe area support for modern notches */
+        @supports (padding: max(0px)) {
+            .header-container {
+                padding-left: max(30px, env(safe-area-inset-left));
+                padding-right: max(30px, env(safe-area-inset-right));
+            }
+            .footer-container {
+                padding-left: max(30px, env(safe-area-inset-left));
+                padding-right: max(30px, env(safe-area-inset-right));
+                padding-bottom: max(14px, env(safe-area-inset-bottom));
+            }
+            @media (max-width: 768px) {
+                .header-container {
+                    padding-left: max(20px, env(safe-area-inset-left));
+                    padding-right: max(20px, env(safe-area-inset-right));
+                }
+                .footer-container {
+                    padding-left: max(20px, env(safe-area-inset-left));
+                    padding-right: max(20px, env(safe-area-inset-right));
+                }
+            }
+            @media (max-width: 480px) {
+                .header-container {
+                    padding-left: max(16px, env(safe-area-inset-left));
+                    padding-right: max(16px, env(safe-area-inset-right));
+                }
+            }
+        }
+
+        /* prevent overscroll bounce on iOS */
+        body {
+            overscroll-behavior: none;
+            touch-action: pan-y pinch-zoom;
+        }
+        
+        .hero {
+            overscroll-behavior: contain;
+        }
+        
+        /* remove tap highlight on interactive elements */
+        .order-btn, .choice-card, .social-links a, .mobile-menu-btn, nav ul li a {
+            -webkit-tap-highlight-color: rgba(138, 43, 226, 0.3);
+        }
+        
+        /* smooth focus ring */
+        .order-btn:focus-visible, .social-links a:focus-visible {
+            outline: 2px solid #bc92ff;
+            outline-offset: 2px;
         }
     </style>
 </head>
@@ -491,9 +778,9 @@
 
         <div class="hero-content">
             <h1 class="section-title">📘 Loyalty Card Mechanics</h1>
-            <p style="margin-bottom: 12px; font-size:1.1rem;">Your complete guide to earning points, unlocking tiers, and maximizing rewards.</p>
+            <p style="margin-bottom: 12px; font-size:1.1rem; text-align: center;">Your complete guide to earning points, unlocking tiers, and maximizing rewards.</p>
 
-            <!-- REQUIREMENTS & SECURITY SECTION (from PDF) -->
+            <!-- REQUIREMENTS & SECURITY SECTION -->
             <div class="info-grid">
                 <p><i class="fas fa-id-card"></i> <strong>🔐 First-Time Registration:</strong> Customers must present a valid ID when the loyalty card is first issued.</p>
                 <p><i class="fas fa-user-lock"></i> <strong>🚫 Non-Transferable:</strong> The card is strictly for your personal use only.</p>
@@ -507,31 +794,33 @@
                 <p><i class="fas fa-calendar-alt"></i> <strong>⏳ Card Validity:</strong> Each loyalty card is valid for three (3) months from the date of issue.</p>
             </div>
 
-            <!-- III. THE TIER SYSTEM (exactly from PDF with the four tiers) -->
+            <!-- III. THE TIER SYSTEM -->
             <div class="subheading"><i class="fas fa-chart-simple"></i> 🏆 Tier System – Climb & unlock permanent discounts</div>
-            <table class="tier-table">
-                <thead>
-                    <tr>
-                        <th>TIER LEVEL</th>
-                        <th>TIER NAME</th>
-                        <th>POINTS REQUIRED</th>
-                        <th>🎁 REWARD</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>TIER I</td><td class="tier-name">HELLO KITTY</td><td>0 – 50 POINTS</td><td><span class="reward-badge">P10 OFF every purchase</span></td></tr>
-                    <tr><td>TIER II</td><td class="tier-name">CINNAMOROLL</td><td>51 – 75 POINTS</td><td><span class="reward-badge">P20 OFF every purchase</span></td></tr>
-                    <tr><td>TIER III</td><td class="tier-name">KEROPPI</td><td>76 – 100 POINTS</td><td><span class="reward-badge">P30 OFF every purchase</span></td></tr>
-                    <tr><td>TIER IV</td><td class="tier-name">KUROMI</td><td>101 POINTS AND ABOVE</td><td><span class="reward-badge">P40 OFF every purchase</span></td></tr>
-                </tbody>
-            </table>
+            <div class="tier-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>TIER LEVEL</th>
+                            <th>TIER NAME</th>
+                            <th>POINTS REQUIRED</th>
+                            <th>🎁 REWARD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>TIER I</td><td class="tier-name">HELLO KITTY</td><td>0 – 50 POINTS</td><td><span class="reward-badge">P10 OFF every purchase</span></td></tr>
+                        <tr><td>TIER II</td><td class="tier-name">CINNAMOROLL</td><td>51 – 75 POINTS</td><td><span class="reward-badge">P20 OFF every purchase</span></td></tr>
+                        <tr><td>TIER III</td><td class="tier-name">KEROPPI</td><td>76 – 100 POINTS</td><td><span class="reward-badge">P30 OFF every purchase</span></td></tr>
+                        <tr><td>TIER IV</td><td class="tier-name">KUROMI</td><td>101 POINTS AND ABOVE</td><td><span class="reward-badge">P40 OFF every purchase</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <!-- IV. REWARDS: YOUR CHOICE (Option A & Option B) -->
+            <!-- IV. REWARDS: YOUR CHOICE -->
             <div class="subheading"><i class="fas fa-gift"></i> 🎯 Rewards: Your Choice (within 3-month period)</div>
             <div class="choice-container">
                 <div class="choice-card">
                     <div class="choice-title">🔄 Option A: Redeem</div>
-                    <div class="choice-desc">Trade your points for exclusive items and/or services that can be seen on our website, and more. Unlock limited-edition vape gear, e-liquids, or accessories. </div>
+                    <div class="choice-desc">Trade your points for exclusive items and/or services that can be seen on our website, and more. Unlock limited-edition vape gear, e-liquids, or accessories.</div>
                 </div>
                 <div class="choice-card">
                     <div class="choice-title">📦 Option B: Collect</div>
@@ -539,21 +828,21 @@
                 </div>
             </div>
 
-            <!-- addition: summary note from PDF mechanics style -->
+            <!-- Pro tip note -->
             <div class="note-text">
                 <i class="fas fa-info-circle" style="margin-right: 10px;"></i> 
                 <strong>Pro-tip:</strong> Your card is valid for 3 months. Track points on our website, climb tiers, and decide at any moment: Redeem for instant rewards or COLLECT to reach higher discount tiers. Permanent discounts apply once you unlock a new tier!
             </div>
 
-            <!-- Quick link to check points + interactive vibe (same CTA as homepage) -->
+            <!-- Quick link to check points -->
             <div style="margin-top: 32px; text-align: center;">
-                <a href="card-search.html" class="order-btn" style="background: linear-gradient(135deg, #6a2be0, #4c1590); padding: 12px 34px; border-radius: 40px; text-decoration: none; font-weight: bold; display: inline-block; color: white; box-shadow: 0 8px 20px rgba(0,0,0,0.4);">
+                <a href="card-search.html" class="order-btn">
                     🔍 Check My Points &nbsp; <i class="fas fa-arrow-right"></i>
                 </a>
                 <p style="margin-top: 18px; font-size: 0.85rem; opacity: 0.8;">👉 Login anytime to see your real-time balance and tier status.</p>
             </div>
 
-            <!-- extra transparency: additional rules as per PDF (non-transferable, ID) was already displayed, but adding a second highlight -->
+            <!-- Security reminder -->
             <div class="note-text" style="margin-top: 20px; background: rgba(0,0,0,0.6);">
                 <i class="fas fa-shield-alt"></i> <strong>Security Reminder:</strong> The loyalty card is non-transferable and requires valid ID & card upon every discount claim. Please keep your card safe.
             </div>
@@ -576,44 +865,59 @@
 
 <script>
     (function() {
-        // Mobile menu toggle + close on click outside
+        // Enhanced mobile menu toggle with smooth interactions
         const mobileBtn = document.getElementById('mobileMenuBtn');
         const mainNav = document.getElementById('mainNav');
+        
         if (mobileBtn && mainNav) {
+            const updateIcon = (isActive) => {
+                const icon = mobileBtn.querySelector('i');
+                if (icon) {
+                    icon.className = isActive ? 'fas fa-times' : 'fas fa-bars';
+                }
+            };
+            
+            const closeMenu = () => {
+                if (mainNav.classList.contains('active')) {
+                    mainNav.classList.remove('active');
+                    updateIcon(false);
+                }
+            };
+            
             mobileBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                mainNav.classList.toggle('active');
-                const icon = mobileBtn.querySelector('i');
-                if (mainNav.classList.contains('active')) {
-                    icon.className = 'fas fa-times';
+                const willBeActive = !mainNav.classList.contains('active');
+                if (willBeActive) {
+                    mainNav.classList.add('active');
+                    updateIcon(true);
                 } else {
-                    icon.className = 'fas fa-bars';
+                    closeMenu();
                 }
             });
-
+            
+            // Close nav on link click
             const navLinks = document.querySelectorAll('#mainNav a');
             navLinks.forEach(link => {
                 link.addEventListener('click', () => {
-                    if (mainNav.classList.contains('active')) {
-                        mainNav.classList.remove('active');
-                        const icon = mobileBtn.querySelector('i');
-                        if (icon) icon.className = 'fas fa-bars';
-                    }
+                    closeMenu();
                 });
             });
-
+            
+            // Close when clicking outside
             document.addEventListener('click', function(event) {
-                if (!mainNav.contains(event.target) && !mobileBtn.contains(event.target) && mainNav.classList.contains('active')) {
-                    mainNav.classList.remove('active');
-                    const icon = mobileBtn.querySelector('i');
-                    if (icon) icon.className = 'fas fa-bars';
+                if (mainNav.classList.contains('active') && 
+                    !mainNav.contains(event.target) && 
+                    !mobileBtn.contains(event.target)) {
+                    closeMenu();
                 }
             });
+            
+            mainNav.addEventListener('click', (e) => e.stopPropagation());
         }
-
-        // Optional additional interactivity: enhance tier hover
-        const rows = document.querySelectorAll('.tier-table tbody tr');
-        rows.forEach(row => {
+        
+        // Interactive hover/active feedback for tier rows (touch & mouse)
+        const tierRows = document.querySelectorAll('.tier-table tbody tr');
+        tierRows.forEach(row => {
             row.addEventListener('mouseenter', () => {
                 row.style.backgroundColor = 'rgba(138, 43, 226, 0.25)';
                 row.style.transition = '0.2s';
@@ -621,9 +925,27 @@
             row.addEventListener('mouseleave', () => {
                 row.style.backgroundColor = 'transparent';
             });
+            // touch friendly
+            row.addEventListener('touchstart', () => {
+                row.style.backgroundColor = 'rgba(138, 43, 226, 0.35)';
+                setTimeout(() => { row.style.backgroundColor = ''; }, 150);
+            });
         });
-
-        // add nice subtle glow on choice cards on hover (already via CSS)
+        
+        // Close mobile menu on window resize (switch to desktop)
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (window.innerWidth > 768 && mainNav && mainNav.classList.contains('active')) {
+                    mainNav.classList.remove('active');
+                    const icon = mobileBtn?.querySelector('i');
+                    if (icon) icon.className = 'fas fa-bars';
+                }
+            }, 100);
+        });
+        
+        // Make choice cards feel tappable (add minor touch feedback)
         const choiceCards = document.querySelectorAll('.choice-card');
         choiceCards.forEach(card => {
             card.addEventListener('mouseenter', () => {
@@ -634,40 +956,12 @@
                 card.style.borderColor = 'rgba(255,215,140,0.25)';
                 card.style.boxShadow = 'none';
             });
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+                setTimeout(() => { card.style.transform = ''; }, 120);
+            });
         });
     })();
 </script>
-
-<!-- order btn style missing? added inline but ensure external consistency -->
-<style>
-    .order-btn {
-        transition: transform 0.2s, box-shadow 0.2s;
-        display: inline-block;
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        text-decoration: none;
-        font-weight: 800;
-        border-radius: 40px;
-        box-shadow: 0 10px 28px rgba(138, 43, 226, 0.35);
-        border: 1px solid rgba(255,255,255,0.12);
-    }
-    .order-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 14px 34px rgba(138, 43, 226, 0.55);
-        background: linear-gradient(135deg, #9f44ff, #7b28c7);
-    }
-    .tier-table td, .tier-table th {
-        backdrop-filter: blur(2px);
-    }
-    .info-grid i {
-        text-shadow: 0 0 4px rgba(0,0,0,0.5);
-    }
-    /* ensure scroll only within hero but body stays locked */
-    body {
-        overflow: hidden;
-    }
-    .hero {
-        scrollbar-width: thin;
-    }
-</style>
 </body>
 </html>
