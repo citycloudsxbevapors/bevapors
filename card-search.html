@@ -53,14 +53,15 @@
             overflow: hidden;
         }
 
-        /* ===== HEADER ===== */
+        /* ===== HEADER (matching index - no burger menu) ===== */
         header {
             background: var(--overlay-90);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--line);
             width: 100%;
             flex-shrink: 0;
+            transition: background 0.2s ease;
         }
 
         .header-container {
@@ -70,10 +71,24 @@
             padding: 12px 30px;
         }
 
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                padding: 8px 16px;
+            }
+        }
+
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .logo {
@@ -84,19 +99,26 @@
             display: flex;
             align-items: center;
             letter-spacing: 0.3px;
+            flex-shrink: 0;
         }
 
         .logo span {
             color: var(--primary);
         }
 
+        /* Navigation - always visible, no burger menu (matching index) */
+        nav {
+            display: block !important;
+        }
+
         nav ul {
             display: flex;
             list-style: none;
+            gap: 8px;
         }
 
         nav ul li {
-            margin-left: 26px;
+            margin-left: 0;
         }
 
         nav ul li a {
@@ -104,35 +126,30 @@
             text-decoration: none;
             font-weight: 600;
             position: relative;
-            padding-bottom: 4px;
+            padding: 8px 16px;
+            border-radius: 40px;
+            transition: all 0.25s ease;
+            display: inline-block;
         }
 
         nav ul li a:hover {
             color: #f8f6ff;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         nav ul li a::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            height: 2px;
-            width: 0;
-            background: linear-gradient(90deg, var(--primary), #b07cff);
-            transition: width 0.25s ease;
-        }
-
-        nav ul li a:hover::after {
-            width: 100%;
-        }
-
-        .mobile-menu-btn {
             display: none;
-            background: none;
-            border: none;
-            color: var(--text-strong);
-            font-size: 24px;
-            cursor: pointer;
+        }
+
+        /* Active page indicator */
+        nav ul li a.active {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(106, 13, 173, 0.3));
+            border: 1px solid rgba(138, 43, 226, 0.5);
+        }
+
+        /* Hide mobile menu button completely */
+        .mobile-menu-btn {
+            display: none !important;
         }
 
         /* ===== HERO ===== */
@@ -312,7 +329,7 @@
             display: flex;
         }
 
-        /* ===== FOOTER ===== */
+        /* ===== FOOTER (matching index) ===== */
         footer {
             background: var(--overlay-75);
             backdrop-filter: blur(5px);
@@ -326,6 +343,18 @@
             max-width: 1400px;
             margin: 0 auto;
             padding: 14px 30px;
+        }
+
+        @media (max-width: 768px) {
+            .footer-container {
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-container {
+                padding: 8px 16px;
+            }
         }
 
         .footer-content {
@@ -367,55 +396,247 @@
             background: linear-gradient(135deg, #d7c0ff, #9b79ff);
         }
 
-        /* ===== RESPONSIVE ===== */
+        .social-links a:active {
+            transform: scale(0.92);
+            background: var(--primary);
+        }
+
+        /* ===== RESPONSIVE DESIGN - NO BURGER MENU (matching index) ===== */
         @media (max-width: 768px) {
-            .header-container { padding: 12px 20px; }
-            nav {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: var(--overlay-90);
-                padding: 18px 0;
-                border-bottom: 1px solid var(--line);
-                z-index: 1001;
+            .header-content {
+                flex-direction: row;
+                justify-content: space-between;
+                flex-wrap: wrap;
             }
-            nav.active { display: block; }
-            nav ul { flex-direction: column; align-items: center; }
-            nav ul li { margin: 10px 0; }
-            .mobile-menu-btn { display: block; }
-            .search-container { padding: 1.6rem 1.4rem; }
-            .footer-container { padding: 12px 20px; }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            /* Navigation always visible, wraps on small screens */
+            nav {
+                width: auto;
+                position: static;
+                background: transparent;
+                backdrop-filter: none;
+                padding: 0;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                animation: none;
+            }
+            
+            nav ul {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+                gap: 6px;
+            }
+            
+            nav ul li {
+                margin: 0;
+                width: auto;
+            }
+            
+            nav ul li a {
+                padding: 6px 14px;
+                font-size: 0.95rem;
+                background: rgba(255, 255, 255, 0.06);
+                border-radius: 40px;
+                white-space: nowrap;
+            }
+            
+            nav ul li a:active {
+                background: rgba(138, 43, 226, 0.4);
+                transform: scale(0.96);
+            }
+            
+            .search-container {
+                padding: 1.6rem 1.4rem;
+                margin: 16px;
+            }
+            
+            .search-wrapper {
+                flex-direction: column;
+            }
+            
+            .search-input-group {
+                width: 100%;
+            }
+            
+            .search-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .cloud {
+                opacity: 0.18;
+            }
         }
 
         @media (max-width: 480px) {
-            .footer-content { flex-direction: column; text-align: center; gap: 8px; }
-            .cloud { display: none; }
-            .search-container { padding: 1.4rem 1.2rem; border-radius: 20px; }
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            
+            .logo {
+                justify-content: center;
+                font-size: 18px;
+            }
+            
+            /* Navigation becomes centered */
+            nav {
+                width: 100%;
+            }
+            
+            nav ul {
+                justify-content: center;
+                gap: 8px;
+            }
+            
+            nav ul li a {
+                padding: 5px 12px;
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+            
+            .copyright {
+                font-size: 0.7rem;
+            }
+            
+            .social-links a {
+                width: 34px;
+                height: 34px;
+            }
+            
+            .cloud {
+                display: none;
+            }
+            
+            .search-container {
+                padding: 1.4rem 1.2rem;
+                border-radius: 20px;
+                margin: 12px;
+            }
+            
+            .search-container h1 {
+                font-size: 1.5rem;
+            }
+            
+            .sub {
+                font-size: 0.85rem;
+                margin-bottom: 1.2rem;
+            }
+            
+            #customerId {
+                padding: 0.85rem 1rem 0.85rem 2.8rem;
+                font-size: 0.95rem;
+            }
+            
+            .search-btn {
+                padding: 0.85rem 1.5rem;
+                font-size: 0.9rem;
+            }
         }
 
         @media (max-height: 620px) {
-            .search-container { padding: 1.4rem 2rem; }
-            .cloud { opacity: 0.15; }
+            .search-container {
+                padding: 1.2rem 1.8rem;
+            }
+            .cloud {
+                opacity: 0.15;
+            }
+            .search-container h1 {
+                margin-bottom: 0.2rem;
+            }
+            .sub {
+                margin-bottom: 1rem;
+            }
+            .search-wrapper {
+                margin: 1rem 0 0.5rem;
+            }
+        }
+
+        /* Landscape mode */
+        @media (max-width: 850px) and (orientation: landscape) {
+            .search-container {
+                padding: 1rem 1.5rem;
+            }
+            .search-wrapper {
+                margin: 0.8rem 0 0.3rem;
+            }
+        }
+
+        /* Safe area support */
+        @supports (padding: max(0px)) {
+            .header-container {
+                padding-left: max(30px, env(safe-area-inset-left));
+                padding-right: max(30px, env(safe-area-inset-right));
+            }
+            .footer-container {
+                padding-left: max(30px, env(safe-area-inset-left));
+                padding-right: max(30px, env(safe-area-inset-right));
+                padding-bottom: max(14px, env(safe-area-inset-bottom));
+            }
+            @media (max-width: 768px) {
+                .header-container {
+                    padding-left: max(20px, env(safe-area-inset-left));
+                    padding-right: max(20px, env(safe-area-inset-right));
+                }
+            }
+            @media (max-width: 480px) {
+                .header-container {
+                    padding-left: max(16px, env(safe-area-inset-left));
+                    padding-right: max(16px, env(safe-area-inset-right));
+                }
+            }
+        }
+
+        /* Prevent overscroll effects */
+        body {
+            overscroll-behavior: none;
+            touch-action: pan-y pinch-zoom;
+        }
+        
+        .hero {
+            overscroll-behavior: contain;
+        }
+        
+        /* Remove tap highlight */
+        .search-btn, .social-links a, nav ul li a {
+            -webkit-tap-highlight-color: rgba(138, 43, 226, 0.3);
+        }
+        
+        .search-btn:focus-visible, .social-links a:focus-visible {
+            outline: 2px solid #bc92ff;
+            outline-offset: 2px;
+        }
+        
+        #customerId {
+            -webkit-tap-highlight-color: transparent;
         }
     </style>
 </head>
 <body>
 <div class="app-wrapper">
 
-    <!-- HEADER -->
+    <!-- HEADER (no burger menu - matching index) -->
     <header>
         <div class="header-container">
             <div class="header-content">
                 <a href="index.html" class="logo">
                     CityClouds <span>X</span> Bevapors
                 </a>
-                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <nav id="mainNav">
-                    <ul style="justify-content: center;">
+                <nav>
+                    <ul>
                         <li><a href="index.html">Home</a></li>
                         <li><a href="mechanics.html">Mechanics</a></li>
                         <li><a href="#">Contact</a></li>
@@ -438,11 +659,11 @@
 
             <div class="search-wrapper">
                 <div class="search-input-group">
-                    
+                    <i class="fas fa-id-card search-icon"></i>
                     <input type="text" id="customerId" placeholder="Enter Card Number" autocomplete="off" spellcheck="false">
                 </div>
                 <button class="search-btn" id="searchButton">
-                     Check Card
+                    <i class="fas fa-search"></i> Check Card
                 </button>
             </div>
 
@@ -452,7 +673,7 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- FOOTER (matching index) -->
     <footer>
         <div class="footer-container">
             <div class="footer-content">
@@ -525,36 +746,25 @@
             if (e.key === 'Enter') { e.preventDefault(); performSearch(); }
         });
         searchInput.addEventListener('input', clearErrorOnInput);
-        searchInput.focus();
+        
+        // Small delay to focus without interrupting UX
+        setTimeout(() => {
+            searchInput.focus();
+        }, 100);
 
-        // Mobile menu
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mainNav = document.getElementById('mainNav');
-
-        if (mobileMenuBtn && mainNav) {
-            mobileMenuBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                mainNav.classList.toggle('active');
-                const icon = mobileMenuBtn.querySelector('i');
-                icon.className = mainNav.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
+        // Button hover/active micro-interactions
+        if (searchBtn) {
+            searchBtn.addEventListener('mouseenter', function() { 
+                this.style.transform = 'translateY(-3px)'; 
             });
-
-            document.querySelectorAll('#mainNav a').forEach(link => {
-                link.addEventListener('click', () => {
-                    if (mainNav.classList.contains('active')) {
-                        mainNav.classList.remove('active');
-                        const icon = mobileMenuBtn.querySelector('i');
-                        if (icon) icon.className = 'fas fa-bars';
-                    }
-                });
+            searchBtn.addEventListener('mouseleave', function() { 
+                this.style.transform = ''; 
             });
-
-            document.addEventListener('click', (e) => {
-                if (!mainNav.contains(e.target) && !mobileMenuBtn.contains(e.target) && mainNav.classList.contains('active')) {
-                    mainNav.classList.remove('active');
-                    const icon = mobileMenuBtn.querySelector('i');
-                    if (icon) icon.className = 'fas fa-bars';
-                }
+            searchBtn.addEventListener('touchstart', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            searchBtn.addEventListener('touchend', function() {
+                this.style.transform = '';
             });
         }
     })();
