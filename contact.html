@@ -31,7 +31,7 @@
         html, body {
             height: 100%;
             width: 100%;
-            overflow: hidden;        /* no global scrolling — everything fits inside */
+            overflow: hidden;
         }
 
         body {
@@ -49,7 +49,6 @@
             overflow: hidden;
         }
 
-        /* fallback solid gradient if bg image missing */
         @supports (background-image: url("images/bg.jpg")) {
             body {
                 background-blend-mode: overlay;
@@ -113,14 +112,6 @@
         .logo span {
             color: var(--primary);
         }
-        .logo-icon {
-            margin-right: 12px;
-            width: 52px;
-            height: 52px;
-            object-fit: contain;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-        }
 
         nav {
             display: block !important;
@@ -151,7 +142,7 @@
             display: none !important;
         }
 
-        /* ----- CONTACT SECTION (scrollable but fits inside hero) ----- */
+        /* ----- CONTACT SECTION (scrollable) ----- */
         .hero {
             flex: 1;
             display: flex;
@@ -179,25 +170,23 @@
             pointer-events: none;
         }
 
-        /* Contact card container - centered, single column layout for info */
         .contact-wrapper {
             width: 100%;
-            max-width: 750px;
+            max-width: 1200px;
             margin: 20px auto;
             padding: 10px 24px 30px;
             z-index: 2;
             position: relative;
         }
 
+        /* TWO-COLUMN LAYOUT: Social DM | Store Hours side by side */
         .contact-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 28px;
-            backdrop-filter: blur(4px);
             justify-content: center;
         }
 
-        /* Contact info card - full width, elegant */
         .contact-info {
             flex: 1;
             min-width: 280px;
@@ -219,7 +208,7 @@
         }
 
         .contact-info h2 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             margin-bottom: 28px;
             font-weight: 800;
             background: linear-gradient(135deg, #fff, #d9c5ff);
@@ -230,6 +219,18 @@
             display: flex;
             align-items: center;
             gap: 12px;
+        }
+
+        /* Split into two equal columns inside the card */
+        .info-split {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+        }
+
+        .info-column {
+            flex: 1;
+            min-width: 200px;
         }
 
         .info-detail {
@@ -267,10 +268,11 @@
             text-decoration: underline;
         }
 
+        /* Store Hours Styling */
         .store-hours {
-            margin-top: 36px;
-            padding-top: 28px;
-            border-top: 1px solid var(--line);
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
         }
         .store-hours h3 {
             font-size: 1.45rem;
@@ -284,13 +286,44 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 12px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--text-muted);
-            padding: 4px 0;
+            padding: 6px 0;
             border-bottom: 1px dashed rgba(255,255,255,0.08);
+            flex-wrap: wrap;
+            gap: 8px;
         }
         .hours-row:last-child {
             border-bottom: none;
+        }
+        .branch-name {
+            font-weight: 600;
+            color: #ddd0ff;
+        }
+        .hours-time {
+            font-family: monospace;
+            letter-spacing: 0.3px;
+        }
+
+        /* Facebook Messenger highlight */
+        .messenger-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(138, 43, 226, 0.2);
+            padding: 12px 20px;
+            border-radius: 60px;
+            margin-top: 8px;
+            transition: all 0.2s;
+            border: 1px solid rgba(138, 43, 226, 0.4);
+        }
+        .messenger-link:hover {
+            background: rgba(138, 43, 226, 0.4);
+            transform: translateX(5px);
+        }
+        .messenger-link i {
+            font-size: 28px;
+            width: auto;
         }
 
         /* floating clouds (decor) */
@@ -312,7 +345,7 @@
         .cloud:nth-child(3) { bottom: 18%; left: 8%; font-size: 110px; animation-delay: 3s; }
         .cloud:nth-child(4) { bottom: 12%; right: 5%; font-size: 95px; animation-delay: 5s; }
 
-        /* Footer (same as index) */
+        /* Footer */
         footer {
             background: var(--overlay-75);
             backdrop-filter: blur(5px);
@@ -366,19 +399,39 @@
             background: linear-gradient(135deg, #d7c0ff, #9b79ff);
         }
 
-        /* ----- RESPONSIVE (no form, only info card) ----- */
-        @media (max-width: 768px) {
-            .contact-wrapper {
-                padding: 10px 20px 20px;
-                max-width: 95%;
+        /* ========== ENHANCED MOBILE CSS ========== */
+        /* Tablet & smaller desktop */
+        @media (max-width: 900px) {
+            .info-split {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .info-column {
+                width: 100%;
+            }
+            .store-hours {
+                margin-top: 10px;
             }
             .contact-info {
-                padding: 28px 22px;
-                border-radius: 36px;
+                padding: 28px 24px;
             }
             .contact-info h2 {
                 font-size: 1.8rem;
-                margin-bottom: 22px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .contact-wrapper {
+                padding: 10px 20px 20px;
+                max-width: 100%;
+            }
+            .contact-info {
+                padding: 24px 20px;
+                border-radius: 36px;
+            }
+            .contact-info h2 {
+                font-size: 1.6rem;
+                margin-bottom: 20px;
             }
             .logo {
                 font-size: 20px;
@@ -404,9 +457,61 @@
                 font-size: 1.2rem;
             }
             .store-hours h3 {
-                font-size: 1.25rem;
+                font-size: 1.3rem;
+            }
+            .hours-row {
+                font-size: 0.85rem;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .messenger-link {
+                padding: 10px 16px;
             }
         }
+
+        @media (max-width: 550px) {
+            .contact-info {
+                padding: 20px 16px;
+                border-radius: 28px;
+            }
+            .contact-info h2 {
+                font-size: 1.4rem;
+                margin-bottom: 16px;
+            }
+            .info-detail {
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+            .info-detail i {
+                font-size: 24px;
+                width: 32px;
+            }
+            .info-detail p, .info-detail a {
+                font-size: 0.85rem;
+            }
+            .messenger-link i {
+                font-size: 22px;
+            }
+            .store-hours h3 {
+                font-size: 1.2rem;
+                margin-bottom: 14px;
+            }
+            .hours-row {
+                font-size: 0.8rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+                padding: 8px 0;
+            }
+            .branch-name {
+                font-weight: 700;
+            }
+            .hours-time {
+                font-size: 0.78rem;
+                opacity: 0.9;
+            }
+        }
+
         @media (max-width: 480px) {
             .header-content {
                 flex-direction: column;
@@ -428,35 +533,7 @@
                 font-size: 0.85rem;
             }
             .contact-wrapper {
-                padding: 6px 16px 18px;
-            }
-            .contact-info {
-                padding: 22px 18px;
-                border-radius: 32px;
-            }
-            .contact-info h2 {
-                font-size: 1.5rem;
-                margin-bottom: 18px;
-            }
-            .info-detail {
-                gap: 14px;
-                margin-bottom: 24px;
-            }
-            .info-detail i {
-                font-size: 24px;
-                width: 30px;
-            }
-            .info-detail p, .info-detail a {
-                font-size: 0.9rem;
-            }
-            .store-hours {
-                margin-top: 24px;
-                padding-top: 20px;
-            }
-            .hours-row {
-                font-size: 0.9rem;
-                flex-wrap: wrap;
-                gap: 6px;
+                padding: 6px 14px 18px;
             }
             .cloud {
                 display: none;
@@ -465,27 +542,30 @@
                 flex-direction: column;
                 text-align: center;
             }
+            .info-detail h3 {
+                font-size: 1.1rem;
+            }
         }
 
-        /* shorter viewport adjustments */
-        @media (max-height: 620px) {
+        /* Small height optimization */
+        @media (max-height: 700px) {
             .contact-wrapper {
-                margin: 8px auto;
-                padding: 6px 20px 12px;
+                margin: 10px auto;
+                padding: 5px 20px 15px;
             }
             .contact-info {
-                padding: 20px 22px;
+                padding: 18px 20px;
             }
             .info-detail {
                 margin-bottom: 18px;
             }
-            .store-hours {
-                margin-top: 18px;
-                padding-top: 16px;
+            .store-hours .hours-row {
+                margin-bottom: 6px;
+                padding: 4px 0;
             }
             .contact-info h2 {
                 margin-bottom: 16px;
-                font-size: 1.7rem;
+                font-size: 1.5rem;
             }
         }
 
@@ -496,15 +576,17 @@
             overscroll-behavior: contain;
         }
 
-        /* tiny hover delight for info rows */
         .info-detail:hover {
             transform: translateX(6px);
+        }
+        .messenger-link {
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 <div class="app-wrapper">
-    <!-- Header identical to index, with active contact state -->
+    <!-- Header identical to index -->
     <header>
         <div class="header-container">
             <div class="header-content">
@@ -522,9 +604,8 @@
         </div>
     </header>
 
-    <!-- Hero section with contact info only (no form) -->
+    <!-- Hero section with side-by-side layout: Social DM + Store Hours -->
     <section class="hero">
-        <!-- decorative clouds -->
         <div class="cloud"><i class="fas fa-cloud"></i></div>
         <div class="cloud"><i class="fas fa-cloud"></i></div>
         <div class="cloud"><i class="fas fa-cloud"></i></div>
@@ -532,40 +613,46 @@
 
         <div class="contact-wrapper">
             <div class="contact-grid">
-                <!-- Single contact information card (form removed) -->
                 <div class="contact-info">
                     <h2><i class="fas fa-headset"></i> Get in Touch</h2>
                     
-  
-                    
-                    <div class="info-detail">
-                        <i class="fas fa-phone-alt"></i>
-
-                    
-                    <div class="info-detail">
-                        <i class="fab fa-facebook-messenger"></i>
-                        <div>
-                            <h3>Social DM</h3>
-                            <p>Reach us on Facebook Page for quick questions<br>(City Clouds X Bevapors)<br><br>We reply within hours.</p>
+                    <!-- TWO COLUMN SPLIT: Social DM (left) | Store Hours (right) -->
+                    <div class="info-split">
+                        <!-- LEFT COLUMN: Social DM & Messenger -->
+                        <div class="info-column">
+                            <div class="info-detail">
+                                <i class="fab fa-facebook-messenger"></i>
+                                <div>
+                                    <h3>Social DM</h3>
+                                    <p>Reach us on Facebook Page for quick questions<br><strong>City Clouds X Bevapors</strong></p>
+                                    <a href="https://www.facebook.com/citycloudsxbevapors" target="_blank" rel="noopener noreferrer" class="messenger-link">
+                                        <i class="fab fa-facebook-messenger"></i> Message us on Messenger
+                                    </a>
+                                    <p style="margin-top: 12px; font-size: 0.85rem;">We reply within hours. 💬</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="store-hours">
-                        <h3><i class="far fa-calendar-alt"></i> Opening Hours</h3>
-                        <div class="hours-row"><span>Porac Branch<br>Mon-Sun: 07:00 AM-01:00 AM</span></div>
-                        <div class="hours-row"><span>Cutcut Branch<br>Mon-Sun: 07:00 AM-01:00 AM</span></div>
-                        <div class="hours-row"><span>Angeles Branch<br>Mon-Sun: 10:00 AM-10:00 PM</span></div>
-                        <div class="hours-row"><span>Telebastagan Branch<br>Mon-Sun: 10:00 AM-10:00 PM</span></div>
-                        <div class="hours-row"><span>Baliti Branch<br>Mon-Sun: 10:00 AM-10:00 PM</span></div>
-                        <div class="hours-row"><span>San Fernando Branch<br>Mon-Sun: 09:00 AM-11:00 PM</span></div>
-                        <div class="hours-row"><span>Bacolor Branch<br>Mon-Sun: 09:00 AM-11:00 PM</span></div>
+                        <!-- RIGHT COLUMN: Store Hours (all branches) -->
+                        <div class="info-column">
+                            <div class="store-hours">
+                                <h3><i class="far fa-calendar-alt"></i> Store Hours</h3>
+                                <div class="hours-row"><span class="branch-name">📍 Porac Branch</span><span class="hours-time">Mon-Sun: 07:00 AM - 01:00 AM</span></div>
+                                <div class="hours-row"><span class="branch-name">📍 Cutcut Branch</span><span class="hours-time">Mon-Sun: 07:00 AM - 01:00 AM</span></div>
+                                <div class="hours-row"><span class="branch-name">📍 Angeles Branch</span><span class="hours-time">Mon-Sun: 10:00 AM - 10:00 PM</span></div>
+                                <div class="hours-row"><span class="branch-name">📍 Telebastagan Branch</span><span class="hours-time">Mon-Sun: 10:00 AM - 10:00 PM</span></div>
+                                <div class="hours-row"><span class="branch-name">📍 Baliti Branch</span><span class="hours-time">Mon-Sun: 10:00 AM - 10:00 PM</span></div>
+                                <div class="hours-row"><span class="branch-name">📍 San Fernando Branch</span><span class="hours-time">Mon-Sun: 09:00 AM - 11:00 PM</span></div>
+                                <div class="hours-row"><span class="branch-name">📍 Bacolor Branch</span><span class="hours-time">Mon-Sun: 09:00 AM - 11:00 PM</span></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer exactly matching index -->
+    <!-- Footer -->
     <footer>
         <div class="footer-container">
             <div class="footer-content">
@@ -582,7 +669,7 @@
 
 <script>
     (function() {
-        // --- active link detection to highlight current page ---
+        // Active link detection
         const currentPath = window.location.pathname.split('/').pop() || 'contact.html';
         const navLinks = document.querySelectorAll('nav ul li a');
         navLinks.forEach(link => {
@@ -597,7 +684,7 @@
             }
         });
         
-        // Manage scroll overscroll behavior on hero for better mobile experience
+        // Overscroll prevention for hero
         const heroSection = document.querySelector('.hero');
         if (heroSection) {
             heroSection.addEventListener('touchmove', (e) => {
@@ -610,8 +697,8 @@
             }, { passive: false });
         }
         
-        // simple micro interaction for info details (hover+touch)
-        const infoItems = document.querySelectorAll('.info-detail');
+        // Micro interactions for info rows
+        const infoItems = document.querySelectorAll('.info-detail, .messenger-link');
         infoItems.forEach(item => {
             item.addEventListener('mouseenter', function() {
                 this.style.transition = 'transform 0.2s ease';
@@ -619,7 +706,6 @@
             item.addEventListener('mouseleave', function() {
                 this.style.transform = '';
             });
-            // tap feedback on mobile
             item.addEventListener('touchstart', function() {
                 this.style.transform = 'translateX(6px)';
             });
@@ -627,9 +713,15 @@
                 this.style.transform = '';
             });
         });
-        
-        // ensure that any email or phone links are clickable and accessible
-        console.log("Contact page ready — form removed, clean info display");
+
+        // Make messenger link open in new tab and track nicely
+        const messengerBtn = document.querySelector('.messenger-link');
+        if (messengerBtn) {
+            messengerBtn.addEventListener('click', (e) => {
+                // just ensuring the link works, no extra prevent default
+                console.log("Opening Facebook Messenger");
+            });
+        }
     })();
 </script>
 </body>
