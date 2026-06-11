@@ -6,7 +6,7 @@
     <title>CityClouds X Bevapors | Contact Us</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ----- RESET + GLOBAL (consistent with index) ----- */
+        /* ----- RESET + GLOBAL ----- */
         * {
             margin: 0;
             padding: 0;
@@ -27,7 +27,6 @@
             --line: rgba(255, 255, 255, 0.12);
         }
 
-        /* FIXED HEIGHT: viewport-based layout prevents scroll */
         html, body {
             height: 100%;
             width: 100%;
@@ -63,7 +62,7 @@
             overflow: hidden;
         }
 
-        /* ----- HEADER (matching index) ----- */
+        /* ----- HEADER (fixed at top, no overlap) ----- */
         header {
             background: var(--overlay-90);
             backdrop-filter: blur(8px);
@@ -71,6 +70,8 @@
             border-bottom: 1px solid var(--line);
             width: 100%;
             flex-shrink: 0;
+            position: relative;
+            z-index: 10;
         }
 
         .header-container {
@@ -138,22 +139,22 @@
             background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(106, 13, 173, 0.3));
             border: 1px solid rgba(138, 43, 226, 0.5);
         }
-        .mobile-menu-btn {
-            display: none !important;
-        }
 
-        /* ----- CONTACT SECTION (scrollable) ----- */
+        /* ----- HERO SECTION - takes remaining space with safe padding ----- */
         .hero {
             flex: 1;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             position: relative;
             width: 100%;
-            min-height: 0;
             overflow-y: auto;
             scroll-behavior: smooth;
+            padding: 20px 0 20px 0;
+            /* Ensure content doesn't hide behind header/footer */
+            min-height: 0;
         }
+        
         .hero::-webkit-scrollbar {
             width: 4px;
             background: transparent;
@@ -165,21 +166,26 @@
         .hero::before {
             content: '';
             position: absolute;
-            inset: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: radial-gradient(70% 60% at 50% 45%, transparent 0%, transparent 55%, rgba(6, 8, 18, 0.35) 100%);
             pointer-events: none;
+            z-index: 0;
         }
 
+        /* Contact wrapper - with extra top/bottom padding for better spacing */
         .contact-wrapper {
             width: 100%;
             max-width: 1200px;
-            margin: 20px auto;
-            padding: 10px 24px 30px;
+            margin: 0 auto;
+            padding: 10px 24px 20px;
             z-index: 2;
             position: relative;
         }
 
-        /* TWO-COLUMN LAYOUT: Social DM | Store Hours side by side */
+        /* TWO-COLUMN LAYOUT */
         .contact-grid {
             display: flex;
             flex-wrap: wrap;
@@ -221,7 +227,6 @@
             gap: 12px;
         }
 
-        /* Split into two equal columns inside the card */
         .info-split {
             display: flex;
             flex-wrap: wrap;
@@ -268,7 +273,6 @@
             text-decoration: underline;
         }
 
-        /* Store Hours Styling */
         .store-hours {
             margin-top: 0;
             padding-top: 0;
@@ -305,7 +309,6 @@
             letter-spacing: 0.3px;
         }
 
-        /* Facebook Messenger highlight */
         .messenger-link {
             display: inline-flex;
             align-items: center;
@@ -326,7 +329,7 @@
             width: auto;
         }
 
-        /* floating clouds (decor) */
+        /* Floating clouds */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-12px); }
@@ -345,7 +348,7 @@
         .cloud:nth-child(3) { bottom: 18%; left: 8%; font-size: 110px; animation-delay: 3s; }
         .cloud:nth-child(4) { bottom: 12%; right: 5%; font-size: 95px; animation-delay: 5s; }
 
-        /* Footer */
+        /* Footer fixed at bottom */
         footer {
             background: var(--overlay-75);
             backdrop-filter: blur(5px);
@@ -353,6 +356,8 @@
             border-top: 1px solid var(--line);
             width: 100%;
             flex-shrink: 0;
+            position: relative;
+            z-index: 10;
         }
         .footer-container {
             max-width: 1400px;
@@ -399,8 +404,7 @@
             background: linear-gradient(135deg, #d7c0ff, #9b79ff);
         }
 
-        /* ========== ENHANCED MOBILE CSS ========== */
-        /* Tablet & smaller desktop */
+        /* ========== RESPONSIVE FIXES (no hidden content) ========== */
         @media (max-width: 900px) {
             .info-split {
                 flex-direction: column;
@@ -415,15 +419,14 @@
             .contact-info {
                 padding: 28px 24px;
             }
-            .contact-info h2 {
-                font-size: 1.8rem;
+            .hero {
+                padding: 15px 0 15px 0;
             }
         }
 
         @media (max-width: 768px) {
             .contact-wrapper {
-                padding: 10px 20px 20px;
-                max-width: 100%;
+                padding: 8px 20px 16px;
             }
             .contact-info {
                 padding: 24px 20px;
@@ -456,16 +459,8 @@
             .info-detail h3 {
                 font-size: 1.2rem;
             }
-            .store-hours h3 {
-                font-size: 1.3rem;
-            }
-            .hours-row {
-                font-size: 0.85rem;
-                flex-direction: row;
-                justify-content: space-between;
-            }
-            .messenger-link {
-                padding: 10px 16px;
+            .hero {
+                padding: 12px 0 12px 0;
             }
         }
 
@@ -503,12 +498,11 @@
                 gap: 4px;
                 padding: 8px 0;
             }
-            .branch-name {
-                font-weight: 700;
+            .hero {
+                padding: 8px 0 8px 0;
             }
-            .hours-time {
-                font-size: 0.78rem;
-                opacity: 0.9;
+            .contact-wrapper {
+                padding: 6px 16px 12px;
             }
         }
 
@@ -532,9 +526,6 @@
                 padding: 6px 12px;
                 font-size: 0.85rem;
             }
-            .contact-wrapper {
-                padding: 6px 14px 18px;
-            }
             .cloud {
                 display: none;
             }
@@ -542,30 +533,32 @@
                 flex-direction: column;
                 text-align: center;
             }
-            .info-detail h3 {
-                font-size: 1.1rem;
+            .hero {
+                padding: 6px 0 6px 0;
             }
         }
 
-        /* Small height optimization */
+        /* Height adjustments to ensure nothing gets clipped */
         @media (max-height: 700px) {
             .contact-wrapper {
-                margin: 10px auto;
-                padding: 5px 20px 15px;
+                padding: 5px 20px 10px;
             }
             .contact-info {
                 padding: 18px 20px;
             }
             .info-detail {
-                margin-bottom: 18px;
+                margin-bottom: 16px;
             }
             .store-hours .hours-row {
                 margin-bottom: 6px;
                 padding: 4px 0;
             }
             .contact-info h2 {
-                margin-bottom: 16px;
+                margin-bottom: 14px;
                 font-size: 1.5rem;
+            }
+            .hero {
+                padding: 10px 0 10px 0;
             }
         }
 
@@ -586,7 +579,7 @@
 </head>
 <body>
 <div class="app-wrapper">
-    <!-- Header identical to index -->
+    <!-- Header -->
     <header>
         <div class="header-container">
             <div class="header-content">
@@ -604,7 +597,7 @@
         </div>
     </header>
 
-    <!-- Hero section with side-by-side layout: Social DM + Store Hours -->
+    <!-- Hero section - scrollable middle area, no overlap with header/footer -->
     <section class="hero">
         <div class="cloud"><i class="fas fa-cloud"></i></div>
         <div class="cloud"><i class="fas fa-cloud"></i></div>
@@ -616,9 +609,9 @@
                 <div class="contact-info">
                     <h2><i class="fas fa-headset"></i> Get in Touch</h2>
                     
-                    <!-- TWO COLUMN SPLIT: Social DM (left) | Store Hours (right) -->
+                    <!-- TWO COLUMN SPLIT: Social DM | Store Hours -->
                     <div class="info-split">
-                        <!-- LEFT COLUMN: Social DM & Messenger -->
+                        <!-- LEFT COLUMN: Social DM -->
                         <div class="info-column">
                             <div class="info-detail">
                                 <i class="fab fa-facebook-messenger"></i>
@@ -633,7 +626,7 @@
                             </div>
                         </div>
 
-                        <!-- RIGHT COLUMN: Store Hours (all branches) -->
+                        <!-- RIGHT COLUMN: Store Hours -->
                         <div class="info-column">
                             <div class="store-hours">
                                 <h3><i class="far fa-calendar-alt"></i> Store Hours</h3>
@@ -684,20 +677,7 @@
             }
         });
         
-        // Overscroll prevention for hero
-        const heroSection = document.querySelector('.hero');
-        if (heroSection) {
-            heroSection.addEventListener('touchmove', (e) => {
-                const { scrollTop, scrollHeight, clientHeight } = heroSection;
-                const isAtTop = scrollTop <= 0;
-                const isAtBottom = scrollTop + clientHeight >= scrollHeight - 2;
-                if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
-                    if (Math.abs(e.deltaY) > 2) e.preventDefault();
-                }
-            }, { passive: false });
-        }
-        
-        // Micro interactions for info rows
+        // Micro interactions
         const infoItems = document.querySelectorAll('.info-detail, .messenger-link');
         infoItems.forEach(item => {
             item.addEventListener('mouseenter', function() {
@@ -713,15 +693,6 @@
                 this.style.transform = '';
             });
         });
-
-        // Make messenger link open in new tab and track nicely
-        const messengerBtn = document.querySelector('.messenger-link');
-        if (messengerBtn) {
-            messengerBtn.addEventListener('click', (e) => {
-                // just ensuring the link works, no extra prevent default
-                console.log("Opening Facebook Messenger");
-            });
-        }
     })();
 </script>
 </body>
