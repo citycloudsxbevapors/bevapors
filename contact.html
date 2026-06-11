@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>CityClouds X Bevapors | Contact Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ----- RESET + GLOBAL (consistent with index) ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #8a2be2;
+            --primary-dark: #6a0dad;
+            --text-strong: #ffffff;
+            --text-muted: #e9e9f3;
+            --overlay-90: rgba(8, 10, 22, 0.90);
+            --overlay-75: rgba(8, 10, 22, 0.75);
+            --overlay-65: rgba(8, 10, 22, 0.65);
+            --card: rgba(10, 12, 20, 0.72);
+            --card-strong: rgba(6, 8, 18, 0.86);
+            --line: rgba(255, 255, 255, 0.12);
+        }
+
+        /* FIXED HEIGHT: viewport-based layout prevents scroll */
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;        /* no global scrolling — everything fits inside */
+        }
+
+        body {
+            color: var(--text-strong);
+            background-image: linear-gradient(180deg, rgba(6,8,18,0.55), rgba(6,8,18,0.55)), url("images/bg.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* fallback solid gradient if bg image missing */
+        @supports (background-image: url("images/bg.jpg")) {
+            body {
+                background-blend-mode: overlay;
+            }
+        }
+
+        .app-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* ----- HEADER (matching index) ----- */
+        header {
+            background: var(--overlay-90);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--line);
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .header-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 12px 30px;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 10px 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .header-container {
+                padding: 8px 16px;
+            }
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text-strong);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            letter-spacing: 0.3px;
+            flex-shrink: 0;
+        }
+        .logo span {
+            color: var(--primary);
+        }
+        .logo-icon {
+            margin-right: 12px;
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        nav {
+            display: block !important;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+        }
+        nav ul li a {
+            color: var(--text-strong);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 40px;
+            transition: all 0.25s ease;
+            display: inline-block;
+        }
+        nav ul li a:hover {
+            color: #f8f6ff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        nav ul li a.active {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(106, 13, 173, 0.3));
+            border: 1px solid rgba(138, 43, 226, 0.5);
+        }
+        .mobile-menu-btn {
+            display: none !important;
+        }
+
+        /* ----- CONTACT SECTION (scrollable but fits inside hero) ----- */
+        .hero {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+            min-height: 0;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        .hero::-webkit-scrollbar {
+            width: 4px;
+            background: transparent;
+        }
+        .hero::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 20px;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(70% 60% at 50% 45%, transparent 0%, transparent 55%, rgba(6, 8, 18, 0.35) 100%);
+            pointer-events: none;
+        }
+
+        /* Contact card container - centered, single column layout for info */
+        .contact-wrapper {
+            width: 100%;
+            max-width: 750px;
+            margin: 20px auto;
+            padding: 10px 24px 30px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .contact-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            backdrop-filter: blur(4px);
+            justify-content: center;
+        }
+
+        /* Contact info card - full width, elegant */
+        .contact-info {
+            flex: 1;
+            min-width: 280px;
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 38px 34px;
+            border: 1px solid var(--line);
+            transition: transform 0.25s ease, box-shadow 0.25s;
+            box-shadow: 0 25px 40px -12px rgba(0,0,0,0.4);
+            text-align: left;
+        }
+
+        .contact-info:hover {
+            transform: translateY(-5px);
+            background: rgba(12, 14, 24, 0.85);
+            border-color: rgba(138, 43, 226, 0.5);
+            box-shadow: 0 30px 45px -12px rgba(138, 43, 226, 0.25);
+        }
+
+        .contact-info h2 {
+            font-size: 2.2rem;
+            margin-bottom: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #d9c5ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .info-detail {
+            margin-bottom: 32px;
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            transition: transform 0.2s ease;
+        }
+        .info-detail i {
+            font-size: 32px;
+            width: 44px;
+            color: var(--primary);
+            text-shadow: 0 0 6px rgba(138,43,226,0.6);
+            margin-top: 4px;
+        }
+        .info-detail div {
+            flex: 1;
+        }
+        .info-detail h3 {
+            font-size: 1.35rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+        .info-detail p, .info-detail a {
+            color: var(--text-muted);
+            line-height: 1.55;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 1rem;
+        }
+        .info-detail a:hover {
+            color: #e2ceff;
+            text-decoration: underline;
+        }
+
+        .store-hours {
+            margin-top: 36px;
+            padding-top: 28px;
+            border-top: 1px solid var(--line);
+        }
+        .store-hours h3 {
+            font-size: 1.45rem;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 1rem;
+            color: var(--text-muted);
+            padding: 4px 0;
+            border-bottom: 1px dashed rgba(255,255,255,0.08);
+        }
+        .hours-row:last-child {
+            border-bottom: none;
+        }
+
+        /* floating clouds (decor) */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        .cloud {
+            position: absolute;
+            opacity: 0.32;
+            z-index: 1;
+            color: #ffffff;
+            filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.25));
+            animation: float 14s infinite ease-in-out;
+            pointer-events: none;
+        }
+        .cloud:nth-child(1) { top: 12%; left: 4%; font-size: 100px; animation-delay: 0s; }
+        .cloud:nth-child(2) { top: 24%; right: 6%; font-size: 130px; animation-delay: 1.5s; }
+        .cloud:nth-child(3) { bottom: 18%; left: 8%; font-size: 110px; animation-delay: 3s; }
+        .cloud:nth-child(4) { bottom: 12%; right: 5%; font-size: 95px; animation-delay: 5s; }
+
+        /* Footer (same as index) */
+        footer {
+            background: var(--overlay-75);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-top: 1px solid var(--line);
+            width: 100%;
+            flex-shrink: 0;
+        }
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 14px 30px;
+        }
+        @media (max-width: 768px) {
+            .footer-container { padding: 12px 20px; }
+        }
+        @media (max-width: 480px) {
+            .footer-container { padding: 10px 16px; }
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .copyright {
+            color: #ffffff;
+            opacity: 0.92;
+            font-size: 0.9rem;
+        }
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid var(--line);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50%;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+        .social-links a:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #d7c0ff, #9b79ff);
+        }
+
+        /* ----- RESPONSIVE (no form, only info card) ----- */
+        @media (max-width: 768px) {
+            .contact-wrapper {
+                padding: 10px 20px 20px;
+                max-width: 95%;
+            }
+            .contact-info {
+                padding: 28px 22px;
+                border-radius: 36px;
+            }
+            .contact-info h2 {
+                font-size: 1.8rem;
+                margin-bottom: 22px;
+            }
+            .logo {
+                font-size: 20px;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: flex-end;
+                gap: 6px;
+            }
+            nav ul li a {
+                padding: 6px 14px;
+                font-size: 0.95rem;
+                background: rgba(255, 255, 255, 0.06);
+            }
+            .cloud {
+                opacity: 0.2;
+            }
+            .info-detail i {
+                font-size: 28px;
+                width: 36px;
+            }
+            .info-detail h3 {
+                font-size: 1.2rem;
+            }
+            .store-hours h3 {
+                font-size: 1.25rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .logo {
+                justify-content: center;
+                font-size: 18px;
+            }
+            nav {
+                width: 100%;
+            }
+            nav ul {
+                justify-content: center;
+            }
+            nav ul li a {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+            .contact-wrapper {
+                padding: 6px 16px 18px;
+            }
+            .contact-info {
+                padding: 22px 18px;
+                border-radius: 32px;
+            }
+            .contact-info h2 {
+                font-size: 1.5rem;
+                margin-bottom: 18px;
+            }
+            .info-detail {
+                gap: 14px;
+                margin-bottom: 24px;
+            }
+            .info-detail i {
+                font-size: 24px;
+                width: 30px;
+            }
+            .info-detail p, .info-detail a {
+                font-size: 0.9rem;
+            }
+            .store-hours {
+                margin-top: 24px;
+                padding-top: 20px;
+            }
+            .hours-row {
+                font-size: 0.9rem;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .cloud {
+                display: none;
+            }
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* shorter viewport adjustments */
+        @media (max-height: 620px) {
+            .contact-wrapper {
+                margin: 8px auto;
+                padding: 6px 20px 12px;
+            }
+            .contact-info {
+                padding: 20px 22px;
+            }
+            .info-detail {
+                margin-bottom: 18px;
+            }
+            .store-hours {
+                margin-top: 18px;
+                padding-top: 16px;
+            }
+            .contact-info h2 {
+                margin-bottom: 16px;
+                font-size: 1.7rem;
+            }
+        }
+
+        body {
+            overscroll-behavior: none;
+        }
+        .hero {
+            overscroll-behavior: contain;
+        }
+
+        /* tiny hover delight for info rows */
+        .info-detail:hover {
+            transform: translateX(6px);
+        }
+    </style>
+</head>
+<body>
+<div class="app-wrapper">
+    <!-- Header identical to index, with active contact state -->
+    <header>
+        <div class="header-container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    CityClouds <span>X</span> Bevapors
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="mechanics.html">Mechanics</a></li>
+                        <li><a href="contact.html" class="active">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero section with contact info only (no form) -->
+    <section class="hero">
+        <!-- decorative clouds -->
+        <div class="cloud"><i class="fas fa-cloud"></i></div>
+        <div class="cloud"><i class="fas fa-cloud"></i></div>
+        <div class="cloud"><i class="fas fa-cloud"></i></div>
+        <div class="cloud"><i class="fas fa-cloud"></i></div>
+
+        <div class="contact-wrapper">
+            <div class="contact-grid">
+                <!-- Single contact information card (form removed) -->
+                <div class="contact-info">
+                    <h2><i class="fas fa-headset"></i> Get in Touch</h2>
+                    
+  
+                    
+                    <div class="info-detail">
+                        <i class="fas fa-phone-alt"></i>
+
+                    
+                    <div class="info-detail">
+                        <i class="fab fa-facebook-messenger"></i>
+                        <div>
+                            <h3>Social DM</h3>
+                            <p>Reach us on Facebook Page for quick questions<br>(City Clouds X Bevapors)<br><br>We reply within hours.</p>
+                        </div>
+                    </div>
+
+                    <div class="store-hours">
+                        <h3><i class="far fa-calendar-alt"></i> Opening Hours</h3>
+                        <div class="hours-row"><span>Porac Branch<br>Mon-Sun: 07:00 AM-01:00 AM</span></div>
+                        <div class="hours-row"><span>Cutcut Branch<br>Mon-Sun: 07:00 AM-01:00 AM</span></div>
+                        <div class="hours-row"><span>Angeles Branch<br>Mon-Sun: 10:00 AM-10:00 PM</span></div>
+                        <div class="hours-row"><span>Telebastagan Branch<br>Mon-Sun: 10:00 AM-10:00 PM</span></div>
+                        <div class="hours-row"><span>Baliti Branch<br>Mon-Sun: 10:00 AM-10:00 PM</span></div>
+                        <div class="hours-row"><span>San Fernando Branch<br>Mon-Sun: 09:00 AM-11:00 PM</span></div>
+                        <div class="hours-row"><span>Bacolor Branch<br>Mon-Sun: 09:00 AM-11:00 PM</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer exactly matching index -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="copyright">
+                    <p>&copy; 2022 CityClouds X Bevapors. All rights reserved. For adults 18+ only.</p>
+                </div>
+                <div class="social-links">
+                    <a target="_blank" href="https://www.facebook.com/citycloudsxbevapors" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+    (function() {
+        // --- active link detection to highlight current page ---
+        const currentPath = window.location.pathname.split('/').pop() || 'contact.html';
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if ((href === currentPath) || 
+                (currentPath === 'contact.html' && href === 'contact.html') ||
+                (currentPath === 'index.html' && href === 'index.html') ||
+                (currentPath === 'mechanics.html' && href === 'mechanics.html')) {
+                link.classList.add('active');
+            } else if (currentPath === '' && href === 'index.html') {
+                link.classList.add('active');
+            }
+        });
+        
+        // Manage scroll overscroll behavior on hero for better mobile experience
+        const heroSection = document.querySelector('.hero');
+        if (heroSection) {
+            heroSection.addEventListener('touchmove', (e) => {
+                const { scrollTop, scrollHeight, clientHeight } = heroSection;
+                const isAtTop = scrollTop <= 0;
+                const isAtBottom = scrollTop + clientHeight >= scrollHeight - 2;
+                if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
+                    if (Math.abs(e.deltaY) > 2) e.preventDefault();
+                }
+            }, { passive: false });
+        }
+        
+        // simple micro interaction for info details (hover+touch)
+        const infoItems = document.querySelectorAll('.info-detail');
+        infoItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transition = 'transform 0.2s ease';
+            });
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+            // tap feedback on mobile
+            item.addEventListener('touchstart', function() {
+                this.style.transform = 'translateX(6px)';
+            });
+            item.addEventListener('touchend', function() {
+                this.style.transform = '';
+            });
+        });
+        
+        // ensure that any email or phone links are clickable and accessible
+        console.log("Contact page ready — form removed, clean info display");
+    })();
+</script>
+</body>
+</html>
