@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Customer Analytics · City Clouds X Bevapors</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:#0d0a14;--surface:#16101f;--card:#1d1429;--border:#2e1f45;
+    --pink:#f25c8f;--pink-soft:#ff96b9;--pink-pale:rgba(242,92,143,0.12);
+    --purple:#a855f7;--purple-soft:#c084fc;--cyan:#22d3ee;
+    --text:#f0e8ff;--muted:#8b7aa8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  header{background:linear-gradient(135deg,#1a0a2e,#120d20,#0d0a14);border-bottom:1px solid var(--border);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .logo{width:44px;height:44px;background:linear-gradient(135deg,var(--pink),var(--purple));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 20px rgba(242,92,143,0.3);}
+  .brand{display:flex;align-items:center;gap:14px;}
+  .brand h1{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;background:linear-gradient(90deg,var(--pink),var(--purple-soft));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .brand p{font-size:0.72rem;color:var(--muted);margin-top:2px;letter-spacing:1.5px;text-transform:uppercase;}
+  .hdate{font-size:0.72rem;color:var(--muted);background:var(--card);border:1px solid var(--border);padding:6px 16px;border-radius:60px;}
+  main{padding:36px 40px;max-width:1400px;margin:0 auto;}
+  .slabel{font-size:0.63rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;margin-top:36px;display:flex;align-items:center;gap:10px;}
+  .slabel::after{content:'';flex:1;height:1px;background:var(--border);}
+  .kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:14px;}
+  .kpi{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px 22px;position:relative;overflow:hidden;transition:border-color .2s;}
+  .kpi:hover{border-color:var(--pink);}
+  .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--ac,var(--pink));border-radius:2px 2px 0 0;}
+  .kpi-label{font-size:0.63rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+  .kpi-val{font-family:'Syne',sans-serif;font-size:2.1rem;font-weight:800;color:var(--ac,var(--pink));line-height:1;}
+  .kpi-sub{font-size:0.68rem;color:var(--muted);margin-top:6px;}
+  .crow{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media(max-width:800px){.crow{grid-template-columns:1fr;}main{padding:20px;}header{padding:20px;}}
+  .cc{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:24px;}
+  .ctitle{font-size:0.8rem;font-weight:700;color:var(--text);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+  .ctitle span{font-size:0.63rem;font-weight:500;color:var(--muted);background:var(--surface);padding:3px 10px;border-radius:60px;border:1px solid var(--border);margin-left:auto;}
+  /* bar chart */
+  .bchart{display:flex;align-items:flex-end;gap:4px;height:130px;}
+  .bgroup{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;min-width:0;}
+  .bwrap{width:100%;display:flex;align-items:flex-end;height:100px;}
+  .bar{width:100%;background:linear-gradient(180deg,var(--pink),#a83860);border-radius:4px 4px 0 0;min-height:3px;position:relative;cursor:default;}
+  .bar:hover{opacity:.82;}
+  .btt{position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:#2e1f45;color:var(--text);font-size:0.63rem;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;border:1px solid var(--border);z-index:10;}
+  .bar:hover .btt{opacity:1;}
+  .bdate{font-size:0.52rem;color:var(--muted);text-align:center;writing-mode:vertical-rl;transform:rotate(180deg);height:30px;line-height:1;}
+  /* donut */
+  .dwrap{display:flex;align-items:center;gap:24px;}
+  .dleg{display:flex;flex-direction:column;gap:10px;flex:1;}
+  .drow{display:flex;align-items:center;gap:10px;font-size:0.76rem;}
+  .ddot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  .dname{color:var(--text);font-weight:600;flex:1;}
+  .dcnt{color:var(--muted);font-size:0.7rem;}
+  .dpct{font-size:0.68rem;font-weight:700;color:var(--pink-soft);}
+  /* pts dist */
+  .pbuckets{display:flex;flex-direction:column;gap:9px;}
+  .prow{display:flex;align-items:center;gap:10px;}
+  .plabel{font-size:0.66rem;color:var(--muted);width:68px;text-align:right;flex-shrink:0;}
+  .pbg{flex:1;height:22px;background:var(--surface);border-radius:6px;overflow:hidden;}
+  .pfill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:8px;transition:width .6s ease;}
+  .pfill span{font-size:0.63rem;font-weight:700;color:white;white-space:nowrap;}
+  .pcnt{font-size:0.68rem;color:var(--muted);width:28px;text-align:right;flex-shrink:0;}
+  /* table */
+  .swrap{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .sinput{flex:1;min-width:180px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 14px;color:var(--text);font-family:inherit;font-size:0.76rem;outline:none;transition:border-color .2s;}
+  .sinput:focus{border-color:var(--pink);}
+  .sinput::placeholder{color:var(--muted);}
+  .fbtn{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 14px;color:var(--muted);font-family:inherit;font-size:0.7rem;cursor:pointer;transition:all .2s;}
+  .fbtn:hover,.fbtn.active{border-color:var(--pink);color:var(--pink);background:var(--pink-pale);}
+  .twrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;}
+  th{font-size:0.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);}
+  td{padding:10px 14px;font-size:0.76rem;border-bottom:1px solid rgba(46,31,69,.4);vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:rgba(242,92,143,.04);}
+  .cnum{font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--pink-soft);}
+  .tbadge{display:inline-flex;align-items:center;gap:5px;font-size:0.63rem;font-weight:700;padding:3px 10px;border-radius:60px;letter-spacing:.5px;}
+  .t-High{background:rgba(242,92,143,.15);color:#f25c8f;border:1px solid rgba(242,92,143,.3);}
+  .t-Mid{background:rgba(168,85,247,.12);color:#c084fc;border:1px solid rgba(168,85,247,.25);}
+  .t-Low{background:rgba(34,211,238,.1);color:#22d3ee;border:1px solid rgba(34,211,238,.2);}
+  .t-New{background:rgba(107,114,128,.1);color:#6b7280;border:1px solid rgba(107,114,128,.2);}
+  .pbar-bg{width:70px;height:6px;background:var(--surface);border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle;margin-left:8px;}
+  .pbar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--pink),var(--purple));}
+  .sactive{font-size:0.63rem;font-weight:700;color:#4ade80;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);padding:3px 10px;border-radius:60px;}
+  footer{text-align:center;padding:28px 40px;font-size:0.68rem;color:var(--muted);border-top:1px solid var(--border);margin-top:40px;letter-spacing:.5px;}
+  footer strong{color:var(--pink-soft);}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo">☁️</div>
+    <div>
+      <h1>City Clouds X Bevapors</h1>
+      <p>Customer Loyalty Analytics</p>
+    </div>
+  </div>
+  <div class="hdate">📅 As of June 19, 2026 · 160 Real Members</div>
+</header>
+
+<main>
+  <div class="slabel">Overview</div>
+  <div class="kgrid">
+    <div class="kpi" style="--ac:var(--pink)"><div class="kpi-label">Total Members</div><div class="kpi-val">160</div><div class="kpi-sub">Real loyalty cards</div></div>
+    <div class="kpi" style="--ac:var(--purple)"><div class="kpi-label">Total Points Issued</div><div class="kpi-val">241</div><div class="kpi-sub">Across all members</div></div>
+    <div class="kpi" style="--ac:var(--cyan)"><div class="kpi-label">Engaged Members</div><div class="kpi-val">41</div><div class="kpi-sub">At least 1 point earned</div></div>
+    <div class="kpi" style="--ac:#f59e0b"><div class="kpi-label">Top Points</div><div class="kpi-val">19</div><div class="kpi-sub">Card #267 · Leading member</div></div>
+    <div class="kpi" style="--ac:var(--purple-soft)"><div class="kpi-label">Avg pts (engaged)</div><div class="kpi-val">5.9</div><div class="kpi-sub">Among 41 active members</div></div>
+    <div class="kpi" style="--ac:#4ade80"><div class="kpi-label">New this week</div><div class="kpi-val">10</div><div class="kpi-sub">Jun 13–17, 2026</div></div>
+  </div>
+
+  <div class="slabel">Membership Trends</div>
+  <div class="crow">
+    <div class="cc">
+      <div class="ctitle">📅 Daily Sign-ups <span>Jun 2 – Jun 17</span></div>
+      <div class="bchart" id="bc"></div>
+    </div>
+    <div class="cc">
+      <div class="ctitle">📊 Member Activity Breakdown <span>160 members</span></div>
+      <div class="dwrap">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="48" fill="none" stroke="#1d1429" stroke-width="22"/>
+          <g id="ds"></g>
+          <text x="60" y="56" text-anchor="middle" font-family="Syne" font-size="18" font-weight="800" fill="#f0e8ff">160</text>
+          <text x="60" y="70" text-anchor="middle" font-family="Space Grotesk" font-size="8" fill="#8b7aa8">MEMBERS</text>
+        </svg>
+        <div class="dleg" id="dl"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slabel">Points & Engagement</div>
+  <div class="crow">
+    <div class="cc">
+      <div class="ctitle">🎯 Points Distribution</div>
+      <div class="pbuckets">
+        <div class="prow"><div class="plabel">0 pts</div><div class="pbg"><div class="pfill" style="width:74.4%;background:linear-gradient(90deg,#4b5563,#374151)"><span>119 members</span></div></div><div class="pcnt">119</div></div>
+        <div class="prow"><div class="plabel">2–4 pts</div><div class="pbg"><div class="pfill" style="width:12.5%;background:linear-gradient(90deg,var(--cyan),#0e9fbd)"><span>20</span></div></div><div class="pcnt">20</div></div>
+        <div class="prow"><div class="plabel">5–9 pts</div><div class="pbg"><div class="pfill" style="width:10%;background:linear-gradient(90deg,var(--purple-soft),#9333ea)"><span>16</span></div></div><div class="pcnt">16</div></div>
+        <div class="prow"><div class="plabel">10–14 pts</div><div class="pbg"><div class="pfill" style="width:3.1%;background:linear-gradient(90deg,var(--pink),#c0195e);min-width:30px"><span>5</span></div></div><div class="pcnt">5</div></div>
+        <div class="prow"><div class="plabel">15–19 pts</div><div class="pbg"><div class="pfill" style="width:1.9%;background:linear-gradient(90deg,#fbbf24,#f59e0b);min-width:28px"><span>3 🏆</span></div></div><div class="pcnt">3</div></div>
+      </div>
+    </div>
+    <div class="cc" style="display:flex;flex-direction:column;gap:16px;">
+      <div class="ctitle">⚡ Engagement Snapshot</div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:7px;"><span style="font-size:.7rem;color:var(--muted)">Engagement Rate</span><span style="font-size:.7rem;font-weight:700;color:var(--pink)">25.6%</span></div>
+        <div style="height:9px;background:var(--surface);border-radius:5px;overflow:hidden;"><div style="width:25.6%;height:100%;background:linear-gradient(90deg,var(--pink),var(--purple));border-radius:5px;"></div></div>
+        <div style="font-size:.63rem;color:var(--muted);margin-top:4px;">41 of 160 members have earned at least 1 point</div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:7px;"><span style="font-size:.7rem;color:var(--muted)">High Earners (10+ pts)</span><span style="font-size:.7rem;font-weight:700;color:var(--purple-soft)">5.0%</span></div>
+        <div style="height:9px;background:var(--surface);border-radius:5px;overflow:hidden;"><div style="width:5%;height:100%;background:linear-gradient(90deg,var(--purple-soft),#9333ea);border-radius:5px;"></div></div>
+        <div style="font-size:.63rem;color:var(--muted);margin-top:4px;">8 members at 10 or more points</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;">
+        <div style="font-size:.62rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Activity Segments</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="font-size:.7rem;color:#fbbf24;">🏆 15–19 pts: <strong>3</strong></div>
+          <div style="font-size:.7rem;color:var(--pink);">🔥 10–14 pts: <strong>5</strong></div>
+          <div style="font-size:.7rem;color:var(--purple-soft);">⭐ 5–9 pts: <strong>16</strong></div>
+          <div style="font-size:.7rem;color:var(--cyan);">✨ 2–4 pts: <strong>20</strong></div>
+          <div style="font-size:.7rem;color:var(--muted);">🌱 0 pts: <strong>119</strong></div>
+          <div style="font-size:.7rem;color:var(--pink-soft);">Total: <strong>160</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slabel">All Members</div>
+  <div class="cc">
+    <div class="swrap">
+      <input class="sinput" type="text" id="si" placeholder="🔍  Search by card number or points..."/>
+      <button class="fbtn active" onclick="ft('all',this)">All</button>
+      <button class="fbtn" onclick="ft('High',this)">🏆 High (10+)</button>
+      <button class="fbtn" onclick="ft('Mid',this)">⭐ Mid (5–9)</button>
+      <button class="fbtn" onclick="ft('Low',this)">✨ Low (1–4)</button>
+      <button class="fbtn" onclick="ft('New',this)">🌱 No Points</button>
+    </div>
+    <div class="twrap"><table><thead><tr><th>#</th><th>Card No.</th><th>Points</th><th>Level</th><th>Effective Date</th><th>Expiry Date</th><th>Status</th></tr></thead><tbody id="tb"></tbody></table></div>
+    <div style="font-size:.66rem;color:var(--muted);margin-top:12px;" id="tc"></div>
+  </div>
+</main>
+
+<footer>Generated for <strong>City Clouds X Bevapors</strong> · Loyalty Analytics Dashboard · 160 Real Members · June 19, 2026</footer>
+
+<script>
+const allCustomers = [{"card": "001", "points": 0, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "002", "points": 0, "effective": "June 2, 2026", "expiry": "September 2, 2026"}, {"card": "003", "points": 0, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "004", "points": 4, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "005", "points": 0, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "006", "points": 0, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "007", "points": 0, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "008", "points": 0, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "009", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "010", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "011", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "012", "points": 3, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "013", "points": 0, "effective": "June 5, 2026", "expiry": "September 5, 2026"}, {"card": "014", "points": 18, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "015", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "016", "points": 6, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "017", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "018", "points": 10, "effective": "June 7, 2026", "expiry": "September 7, 2026"}, {"card": "019", "points": 0, "effective": "June 11, 2026", "expiry": "September 11, 2026"}, {"card": "020", "points": 0, "effective": "June 12, 2026", "expiry": "September 12, 2026"}, {"card": "021", "points": 0, "effective": "June 12, 2026", "expiry": "September 12, 2026"}, {"card": "022", "points": 0, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "023", "points": 0, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "025", "points": 0, "effective": "June 15, 2026", "expiry": "September 15, 2026"}, {"card": "026", "points": 0, "effective": "June 16, 2026", "expiry": "September 16, 2026"}, {"card": "027", "points": 0, "effective": "June 16, 2026", "expiry": "September 16, 2026"}, {"card": "051", "points": 3, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "052", "points": 2, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "053", "points": 0, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "054", "points": 0, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "055", "points": 0, "effective": "June 5, 2026", "expiry": "September 5, 2026"}, {"card": "056", "points": 0, "effective": "June 5, 2026", "expiry": "September 5, 2026"}, {"card": "057", "points": 4, "effective": "June 5, 2026", "expiry": "September 5, 2026"}, {"card": "058", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "059", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "060", "points": 0, "effective": "June 7, 2026", "expiry": "September 7, 2026"}, {"card": "061", "points": 0, "effective": "June 7, 2026", "expiry": "September 7, 2026"}, {"card": "062", "points": 0, "effective": "June 7, 2026", "expiry": "September 7, 2026"}, {"card": "063", "points": 3, "effective": "June 8, 2026", "expiry": "September 8, 2026"}, {"card": "064", "points": 0, "effective": "June 8, 2026", "expiry": "September 8, 2026"}, {"card": "065", "points": 0, "effective": "June 9, 2026", "expiry": "September 9, 2026"}, {"card": "066", "points": 2, "effective": "June 11, 2026", "expiry": "September 11, 2026"}, {"card": "067", "points": 0, "effective": "June 11, 2026", "expiry": "September 11, 2026"}, {"card": "068", "points": 10, "effective": "June 11, 2026", "expiry": "September 11, 2026"}, {"card": "069", "points": 0, "effective": "June 11, 2026", "expiry": "September 11, 2026"}, {"card": "071", "points": 0, "effective": "June 12, 2026", "expiry": "September 12, 2026"}, {"card": "072", "points": 0, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "073", "points": 0, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "075", "points": 0, "effective": "June 14, 2026", "expiry": "September 14, 2026"}, {"card": "076", "points": 0, "effective": "June 14, 2026", "expiry": "September 14, 2026"}, {"card": "098", "points": 4, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "099", "points": 0, "effective": "June 2, 2026", "expiry": "September 2, 2026"}, {"card": "100", "points": 2, "effective": "June 2, 2026", "expiry": "September 2, 2026"}, {"card": "101", "points": 3, "effective": "June 2, 2026", "expiry": "September 2, 2026"}, {"card": "102", "points": 3, "effective": "June 2, 2026", "expiry": "September 2, 2026"}, {"card": "103", "points": 0, "effective": "June 2, 2026", "expiry": "September 2, 2026"}, {"card": "104", "points": 3, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "105", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "106", "points": 10, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "107", "points": 0, "effective": "June 5, 2026", "expiry": "September 5, 2026"}, {"card": "108", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "109", "points": 9, "effective": "June 7, 2026", "expiry": "September 7, 2026"}, {"card": "110", "points": 0, "effective": "June 7, 2026", "expiry": "September 7, 2026"}, {"card": "111", "points": 0, "effective": "June 7, 2026", "expiry": "September 7, 2026"}, {"card": "112", "points": 0, "effective": "June 7, 2026", "expiry": "September 7, 2026"}, {"card": "113", "points": 0, "effective": "June 7, 2026", "expiry": "September 7, 2026"}, {"card": "114", "points": 0, "effective": "June 7, 2026", "expiry": "September 7, 2026"}, {"card": "115", "points": 5, "effective": "June 7, 2026", "expiry": "September 7, 2026"}, {"card": "116", "points": 0, "effective": "June 8, 2026", "expiry": "September 8, 2026"}, {"card": "117", "points": 0, "effective": "June 12, 2026", "expiry": "September 12, 2026"}, {"card": "118", "points": 0, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "119", "points": 4, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "120", "points": 0, "effective": "June 14, 2026", "expiry": "September 14, 2026"}, {"card": "121", "points": 0, "effective": "June 16, 2026", "expiry": "September 16, 2026"}, {"card": "122", "points": 0, "effective": "June 17, 2026", "expiry": "September 17, 2026"}, {"card": "123", "points": 0, "effective": "June 17, 2026", "expiry": "September 17, 2026"}, {"card": "147", "points": 3, "effective": "June 8, 2026", "expiry": "September 8, 2026"}, {"card": "148", "points": 0, "effective": "June 8, 2026", "expiry": "September 8, 2026"}, {"card": "149", "points": 0, "effective": "June 8, 2026", "expiry": "September 8, 2026"}, {"card": "150", "points": 0, "effective": "June 5, 2026", "expiry": "September 5, 2026"}, {"card": "152", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "153", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "154", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "155", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "156", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "157", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "158", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "159", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "160", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "161", "points": 2, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "162", "points": 0, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "163", "points": 0, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "164", "points": 0, "effective": "June 11, 2026", "expiry": "September 11, 2026"}, {"card": "165", "points": 0, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "166", "points": 0, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "201", "points": 0, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "202", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "203", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "204", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "205", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "206", "points": 0, "effective": "June 5, 2026", "expiry": "September 5, 2026"}, {"card": "207", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "208", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "209", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "210", "points": 5, "effective": "June 7, 2026", "expiry": "September 7, 2026"}, {"card": "211", "points": 0, "effective": "June 7, 2026", "expiry": "September 7, 2026"}, {"card": "212", "points": 0, "effective": "June 8, 2026", "expiry": "September 8, 2026"}, {"card": "213", "points": 0, "effective": "June 9, 2026", "expiry": "September 9, 2026"}, {"card": "214", "points": 3, "effective": "June 9, 2026", "expiry": "September 9, 2026"}, {"card": "215", "points": 0, "effective": "June 9, 2026", "expiry": "September 9, 2026"}, {"card": "216", "points": 0, "effective": "June 9, 2026", "expiry": "September 9, 2026"}, {"card": "217", "points": 0, "effective": "June 14, 2026", "expiry": "September 14, 2026"}, {"card": "218", "points": 0, "effective": "June 14, 2026", "expiry": "September 14, 2026"}, {"card": "219", "points": 0, "effective": "June 16, 2026", "expiry": "September 16, 2026"}, {"card": "251", "points": 10, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "252", "points": 5, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "253", "points": 3, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "254", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "255", "points": 7, "effective": "June 5, 2026", "expiry": "September 5, 2026"}, {"card": "256", "points": 6, "effective": "June 5, 2026", "expiry": "September 5, 2026"}, {"card": "257", "points": 5, "effective": "June 5, 2026", "expiry": "September 5, 2026"}, {"card": "258", "points": 13, "effective": "June 5, 2026", "expiry": "September 5, 2026"}, {"card": "259", "points": 8, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "260", "points": 5, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "261", "points": 3, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "262", "points": 3, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "263", "points": 2, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "264", "points": 12, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "265", "points": 8, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "266", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "267", "points": 19, "effective": "June 7, 2026", "expiry": "September 7, 2026"}, {"card": "269", "points": 9, "effective": "June 8, 2026", "expiry": "September 8, 2026"}, {"card": "271", "points": 0, "effective": "June 11, 2026", "expiry": "September 11, 2026"}, {"card": "272", "points": 0, "effective": "June 11, 2026", "expiry": "September 11, 2026"}, {"card": "273", "points": 0, "effective": "June 12, 2026", "expiry": "September 12, 2026"}, {"card": "274", "points": 0, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "275", "points": 0, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "276", "points": 0, "effective": "June 16, 2026", "expiry": "September 16, 2026"}, {"card": "300", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "301", "points": 0, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "302", "points": 0, "effective": "June 4, 2026", "expiry": "September 4, 2026"}, {"card": "303", "points": 0, "effective": "June 5, 2026", "expiry": "September 5, 2026"}, {"card": "304", "points": 0, "effective": "June 5, 2026", "expiry": "September 5, 2026"}, {"card": "305", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "306", "points": 0, "effective": "June 6, 2026", "expiry": "September 6, 2026"}, {"card": "310", "points": 0, "effective": "June 8, 2026", "expiry": "September 8, 2026"}, {"card": "311", "points": 0, "effective": "June 9, 2026", "expiry": "September 9, 2026"}, {"card": "313", "points": 0, "effective": "June 10, 2026", "expiry": "September 10, 2026"}, {"card": "314", "points": 0, "effective": "June 10, 2026", "expiry": "September 10, 2026"}, {"card": "315", "points": 0, "effective": "June 11, 2026", "expiry": "September 11, 2026"}, {"card": "316", "points": 0, "effective": "June 11, 2026", "expiry": "September 11, 2026"}, {"card": "317", "points": 0, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "318", "points": 2, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "319", "points": 0, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "320", "points": 0, "effective": "June 13, 2026", "expiry": "September 13, 2026"}, {"card": "322", "points": 0, "effective": "June 17, 2026", "expiry": "September 17, 2026"}, {"card": "323", "points": 0, "effective": "June 17, 2026", "expiry": "September 17, 2026"}, {"card": "324", "points": 0, "effective": "June 17, 2026", "expiry": "September 17, 2026"}, {"card": "152", "points": 0, "effective": "June 3, 2026", "expiry": "September 3, 2026"}, {"card": "350", "points": 0, "effective": "June 3, 2026", "expiry": "September 3, 2026"}];
+
+function getLevel(p){
+  if(p>=15) return 'High';
+  if(p>=5)  return 'Mid';
+  if(p>=1)  return 'Low';
+  return 'New';
+}
+const levelLabel = {High:'🏆 High (15–19)',Mid:'⭐ Mid (5–14)',Low:'✨ Low (1–4)',New:'🌱 No Points'};
+const levelColors = {High:'#fbbf24',Mid:'#c084fc',Low:'#22d3ee',New:'#4b5563'};
+
+// Signup chart
+const dates={'Jun 2':6,'Jun 3':17,'Jun 4':21,'Jun 5':13,'Jun 6':24,'Jun 7':14,'Jun 8':9,'Jun 9':6,'Jun 10':2,'Jun 11':10,'Jun 12':5,'Jun 13':17,'Jun 14':5,'Jun 15':1,'Jun 16':5,'Jun 17':5};
+const mx=Math.max(...Object.values(dates));
+const bc=document.getElementById('bc');
+for(const[d,n] of Object.entries(dates)){
+  const h=(n/mx)*100;
+  const g=document.createElement('div');g.className='bgroup';
+  g.innerHTML=`<div class="bwrap"><div class="bar" style="height:${h}%"><div class="btt">${d}: ${n}</div></div></div><div class="bdate">${d}</div>`;
+  bc.appendChild(g);
+}
+
+// Donut
+const tiers=[
+  {name:'No Points',count:119,color:'#4b5563'},
+  {name:'Low (1–4)',count:20,color:'#22d3ee'},
+  {name:'Mid (5–14)',count:18,color:'#c084fc'},
+  {name:'High (15+)',count:3,color:'#fbbf24'},
+];
+const total=160,r=48,cx=60,cy=60,circ=2*Math.PI*r;
+let cum=0;
+const ds=document.getElementById('ds');
+tiers.forEach(t=>{
+  const frac=t.count/total,dash=frac*circ,gap=circ-dash,offset=circ-cum*circ;
+  const s=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  s.setAttribute('cx',cx);s.setAttribute('cy',cy);s.setAttribute('r',r);
+  s.setAttribute('fill','none');s.setAttribute('stroke',t.color);s.setAttribute('stroke-width','22');
+  s.setAttribute('stroke-dasharray',`${dash} ${gap}`);s.setAttribute('stroke-dashoffset',offset);
+  ds.appendChild(s);cum+=frac;
+});
+const dl=document.getElementById('dl');
+[...tiers].reverse().forEach(t=>{
+  const pct=((t.count/total)*100).toFixed(1);
+  dl.innerHTML+=`<div class="drow"><div class="ddot" style="background:${t.color}"></div><div class="dname">${t.name}</div><div class="dcnt">${t.count}</div><div class="dpct">${pct}%</div></div>`;
+});
+
+// Table
+let cf='all',sv='';
+function ft(f,btn){cf=f;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render();}
+document.getElementById('si').addEventListener('input',e=>{sv=e.target.value.trim();render();});
+
+function render(){
+  const tbody=document.getElementById('tb');
+  let rows=allCustomers.filter(c=>{
+    const lv=getLevel(c.points);
+    const mf=cf==='all'||lv===cf;
+    const ms=sv===''||c.card.includes(sv)||String(c.points).includes(sv);
+    return mf&&ms;
+  }).sort((a,b)=>b.points-a.points);
+  tbody.innerHTML=rows.map((c,i)=>{
+    const lv=getLevel(c.points);
+    const bw=Math.min((c.points/19)*100,100);
+    return`<tr>
+      <td style="color:var(--muted);font-size:.68rem">${i+1}</td>
+      <td><span class="cnum">#${c.card}</span></td>
+      <td><strong style="color:${levelColors[lv]}">${c.points}</strong><div class="pbar-bg"><div class="pbar-fill" style="width:${bw}%;background:${levelColors[lv]}"></div></div></td>
+      <td><span class="tbadge t-${lv}">${levelLabel[lv]}</span></td>
+      <td style="color:var(--muted);font-size:.7rem">${c.effective}</td>
+      <td style="color:var(--muted);font-size:.7rem">${c.expiry}</td>
+      <td><span class="sactive">Active</span></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('tc').textContent=`Showing ${rows.length} of ${allCustomers.length} members`;
+}
+render();
+</script>
+</body>
+</html>
